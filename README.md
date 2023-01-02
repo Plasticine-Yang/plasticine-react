@@ -32,3 +32,7 @@ You can experience the project through playground.
 # execute the command in the project root directory.
 pnpm play
 ```
+
+## Tutorial
+
+- [jsx](docs/react/jsx.md)
