@@ -1,0 +1,16 @@
+{
+  "name": "@plasticine-react/react-reconciler",
+  "version": "0.0.0",
+  "description": "reconciler of react.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "plasticine-react"
+  ],
+  "author": "Plasticine-Yang",
+  "license": "MIT"
+}

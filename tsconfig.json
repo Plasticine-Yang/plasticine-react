@@ -12,7 +12,10 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "allowJs": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@plasticine-react/*": ["packages/*/src"]
+    }
   },
   "include": ["packages/**/*.ts"],
   "exclude": ["node_modules"]

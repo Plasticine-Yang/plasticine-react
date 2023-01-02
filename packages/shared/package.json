@@ -1,0 +1,22 @@
+{
+  "name": "@plasticine-react/shared",
+  "version": "0.0.0",
+  "description": "internal utils shared across @plasticine-react packages.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "keywords": [
+    "react",
+    "plasticine-react"
+  ],
+  "author": "Plasticine-Yang",
+  "license": "MIT"
+}
