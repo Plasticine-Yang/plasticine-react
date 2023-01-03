@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsx scripts/build.ts",
+    "build": "plasticine-react build",
     "commit": "cz",
     "up": "taze -wI",
     "prepare": "husky install"

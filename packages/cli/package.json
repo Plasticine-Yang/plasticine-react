@@ -17,7 +17,8 @@
     "plasticine-react": "./bin/plasticine-react.js"
   },
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "stub": "unbuild --stub"
   },
   "keywords": [
     "react",
@@ -26,10 +27,12 @@
   "author": "Plasticine-Yang",
   "license": "MIT",
   "devDependencies": {
+    "@types/rimraf": "^3.0.2",
     "unbuild": "^1.0.2"
   },
   "dependencies": {
     "cac": "^6.7.14",
-    "execa": "^6.1.0"
+    "chalk": "^5.2.0",
+    "rimraf": "^3.0.2"
   }
 }

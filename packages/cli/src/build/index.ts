@@ -2,21 +2,22 @@ import { readdirSync } from 'fs'
 import { cpus } from 'os'
 import { resolve } from 'path'
 
-import { execa } from 'execa'
+import rimraf from 'rimraf'
 
-import { PACKAGES_PATH, PROJECT_ROOT } from './constants'
-import { resolveJSONFile } from './utils'
+import { PACKAGES_PATH } from '../constants'
+import { Logger } from '../logger'
+import { resolveJSONFile, runParallel } from '../utils'
+import { rollupBuild } from './rollup'
+import { BuildActionOptions } from './types'
+
+const logger = new Logger('build')
 
 const reservedPackages = ['cli']
 const allPackages = readdirSync(PACKAGES_PATH).filter(
   (p) => !reservedPackages.includes(p),
 )
 
-interface BuildOptions {
-  '--': string[]
-  mode?: 'development' | 'production'
-}
-export function buildAction(packages: string[], options: BuildOptions) {
+export function buildAction(packages: string[], options: BuildActionOptions) {
   // build all packages default
   packages = packages.length === 0 ? allPackages : packages
 
@@ -34,63 +35,40 @@ export function buildAction(packages: string[], options: BuildOptions) {
 /**
  * @description 为 options 设置默认值
  */
-function resolveOptionsDefaultValue(options: BuildOptions): BuildOptions {
+function resolveOptionsDefaultValue(
+  options: BuildActionOptions,
+): Required<BuildActionOptions> {
   return {
     '--': options['--'],
     mode: options.mode ?? 'development',
   }
 }
 
-async function buildAll(packages: string[], options: BuildOptions) {
+async function buildAll(packages: string[], options: BuildActionOptions) {
   await runParallel(cpus().length, packages, build, options)
 }
 
-async function runParallel(
-  maxConcurrency: number,
-  packages: string[],
-  iteratorFn: any,
-  optionsForIteratorFn: BuildOptions,
-) {
-  const ret = []
-  const executing: any[] = []
-  for (const item of packages) {
-    const p = Promise.resolve().then(() =>
-      iteratorFn(item, optionsForIteratorFn),
-    )
-    ret.push(p)
-
-    if (maxConcurrency <= packages.length) {
-      const e: any = p.then(() => executing.splice(executing.indexOf(e), 1))
-      executing.push(e)
-      if (executing.length >= maxConcurrency) {
-        await Promise.race(executing)
-      }
-    }
-  }
-  return Promise.all(ret)
-}
-
-async function build(target: string, options: BuildOptions) {
+async function build(packageName: string, options: BuildActionOptions) {
   const { mode } = options
 
-  const pkgDir = resolve(PACKAGES_PATH, target)
+  const pkgDir = resolve(PACKAGES_PATH, packageName)
   const pkg = resolveJSONFile(`${pkgDir}/package.json`)
 
-  // ignore private packages
-  if (pkg.private) {
+  // ignore packages that is private or no buildConfig field
+  if (pkg.private || !pkg.buildConfig) {
+    if (!pkg.buildConfig) {
+      logger.warn(
+        `pass ${packageName} -- cannot find buildConfig field in package: ${packageName}`,
+      )
+    }
+
     return
   }
 
-  await execa(
-    'rollup',
-    [
-      '-c',
-      '--configPlugin typescript',
-      '--environment',
-      [`NODE_ENV:${mode}`, `TARGET:${target}`].join(','),
-    ],
-    { stdio: 'inherit', cwd: PROJECT_ROOT },
-  )
+  // remove dist files
+  rimraf.sync(resolve(pkgDir, 'dist'))
+
+  await rollupBuild({ packageName, mode })
 
   // if (buildTypes && pkg.types) {
   //   console.log()
