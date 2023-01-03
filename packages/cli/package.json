@@ -27,13 +27,22 @@
   ],
   "author": "Plasticine-Yang",
   "license": "MIT",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "typescript"
+      ]
+    }
+  },
   "devDependencies": {
     "@types/rimraf": "^3.0.2",
     "unbuild": "^1.0.2"
   },
   "dependencies": {
+    "@rollup/plugin-typescript": "^10.0.1",
     "cac": "^6.7.14",
     "chalk": "^5.2.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "rollup": "^3.9.1"
   }
 }

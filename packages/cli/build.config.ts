@@ -1,7 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index.ts'],
+  entries: ['src/index'],
   outDir: 'dist',
   clean: true,
   declaration: true,
@@ -9,5 +9,4 @@ export default defineBuildConfig({
     emitCJS: true,
     cjsBridge: true,
   },
-  failOnWarn: false,
 })
