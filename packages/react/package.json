@@ -1,6 +1,6 @@
 {
   "name": "@plasticine-react/react",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "react.",
   "type": "module",
   "main": "./dist/cjs/react.js",
