@@ -18,11 +18,11 @@ Build my own react. ⚡
 
 ### Framework
 
-| Package    | Content       | Status |
-| ---------- | ------------- | ------ |
-| React      | JSX transform | ️ ️🔳  |
-| Reconciler | Fiber         | ️ ️🔳  |
-| Reconciler | Update        | ️ ️🔳  |
+| Package    | Content     | Status |
+| ---------- | ----------- | ------ |
+| React      | JSX Runtime | ☑️     |
+| Reconciler | Fiber       | ️🔳    |
+| Reconciler | Update      | 🔳     |
 
 ## Usage
 

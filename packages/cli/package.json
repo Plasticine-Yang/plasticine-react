@@ -1,0 +1,35 @@
+{
+  "name": "@plasticine-react/cli",
+  "version": "0.0.0",
+  "description": "cli for @plasticine-react.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "plasticine-react": "./bin/plasticine-react.js"
+  },
+  "scripts": {
+    "build": "unbuild"
+  },
+  "keywords": [
+    "react",
+    "plasticine-react"
+  ],
+  "author": "Plasticine-Yang",
+  "license": "MIT",
+  "devDependencies": {
+    "unbuild": "^1.0.2"
+  },
+  "dependencies": {
+    "cac": "^6.7.14",
+    "execa": "^6.1.0"
+  }
+}
