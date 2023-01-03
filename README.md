@@ -12,8 +12,8 @@ Build my own react. ⚡
 | standard            | eslint                                             | ☑️     |
 | standard            | prettier                                           | ☑️     |
 | standard            | commitlint, commitizen, cz-git, husky, lint-staged | ☑️     |
+| build               | rollup                                             | ☑️     |
 | unit-test           | jest                                               | ️🔳    |
-| build               | rollup                                             | 🔳     |
 | deploy              | github action                                      | 🔳     |
 
 ### Framework
@@ -23,6 +23,7 @@ Build my own react. ⚡
 | React      | JSX Runtime | ☑️     |
 | Reconciler | Fiber       | ️🔳    |
 | Reconciler | Update      | 🔳     |
+| playground | play        | 🔳     |
 
 ## Usage
 
