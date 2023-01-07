@@ -3,15 +3,23 @@
   "version": "0.0.0",
   "description": "internal utils shared across @plasticine-react packages.",
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/cjs/shared.js",
+  "module": "./dist/esm/shared.js",
+  "types": "./dist/shared.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/cjs/shared.js",
+      "import": "./dist/esm/shared.js",
+      "types": "./dist/shared.d.ts"
     }
+  },
+  "buildConfig": {
+    "name": "ReactShared",
+    "formats": [
+      "esm",
+      "cjs",
+      "umd"
+    ]
   },
   "keywords": [
     "react",
