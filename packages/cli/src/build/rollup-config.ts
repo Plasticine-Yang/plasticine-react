@@ -74,6 +74,7 @@ function createRollupConfig(options: RollupBuildConfig) {
           file: resolveByTargetPackage(`dist/${format}/${packageName}.js`),
         },
         plugins: resolveRollupPlugins(),
+        external: Object.keys(pkg.dependencies ?? {}),
       })
     })
 
