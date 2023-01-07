@@ -1,8 +1,15 @@
 import { existsSync } from 'fs'
 import { resolve } from 'path'
 
+import {
+  defineConfig,
+  InputPluginOption,
+  ModuleFormat,
+  RollupOptions,
+} from 'rollup'
+
 import typescript from '@rollup/plugin-typescript'
-import { defineConfig, ModuleFormat, RollupOptions } from 'rollup'
+import json from '@rollup/plugin-json'
 
 import { PACKAGES_PATH } from '../constants'
 import { Logger } from '../logger'
@@ -66,7 +73,7 @@ function createRollupConfig(options: RollupBuildConfig) {
           format,
           file: resolveByTargetPackage(`dist/${format}/${packageName}.js`),
         },
-        plugins: [typescript()],
+        plugins: resolveRollupPlugins(),
       })
     })
 
@@ -124,6 +131,10 @@ function createRollupConfig(options: RollupBuildConfig) {
   run()
 
   return rollupConfig.flat()
+}
+
+function resolveRollupPlugins(): InputPluginOption {
+  return [typescript(), json()]
 }
 
 export { createRollupConfig }
