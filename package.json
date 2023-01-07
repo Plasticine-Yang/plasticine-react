@@ -9,6 +9,8 @@
   "scripts": {
     "build": "plasticine-react build",
     "build:cli": "pnpm -C packages/cli build",
+    "stub:cli": "pnpm -C packages/cli stub",
+    "play": "pnpm -C playground dev",
     "commit": "cz",
     "up": "taze -wI",
     "prepare": "husky install",
