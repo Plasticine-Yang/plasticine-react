@@ -3,7 +3,24 @@
   "version": "0.0.0",
   "description": "reconciler of react.",
   "type": "module",
-  "main": "index.js",
+  "main": "./dist/cjs/react-reconciler.js",
+  "module": "./dist/esm/react-reconciler.js",
+  "types": "./dist/react-reconciler.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/react-reconciler.js",
+      "import": "./dist/esm/react-reconciler.js",
+      "types": "./dist/react-reconciler.d.ts"
+    }
+  },
+  "buildConfig": {
+    "name": "ReactReconciler",
+    "formats": [
+      "esm",
+      "cjs",
+      "umd"
+    ]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,5 +29,8 @@
     "plasticine-react"
   ],
   "author": "Plasticine-Yang",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@plasticine-react/shared": "workspace:*"
+  }
 }
