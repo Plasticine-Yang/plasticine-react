@@ -1,6 +1,6 @@
 {
   "name": "@plasticine-react/react-reconciler",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "reconciler of react.",
   "type": "module",
   "main": "./dist/cjs/react-reconciler.js",
