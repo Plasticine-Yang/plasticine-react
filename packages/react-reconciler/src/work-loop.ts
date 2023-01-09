@@ -1,6 +1,9 @@
 import { beginWork } from './begin-work'
 import { completeWork } from './complete-work'
-import { FiberNode } from './fiber'
+import { createWorkInProgress, FiberNode, FiberRootNode } from './fiber'
+import { WorkTag } from './work-tags'
+
+const { HostRoot } = WorkTag
 
 let workInProgress: FiberNode | null = null
 
@@ -8,7 +11,7 @@ let workInProgress: FiberNode | null = null
  * @description 渲染根元素 -- 工作流入口
  * @param root 根元素的 fiber
  */
-function renderRoot(root: FiberNode) {
+function renderRoot(root: FiberRootNode) {
   // 初始化
   prepareFreshStack(root)
 
@@ -19,8 +22,8 @@ function renderRoot(root: FiberNode) {
 /**
  * @description 初始化工作
  */
-function prepareFreshStack(root: FiberNode) {
-  workInProgress = root
+function prepareFreshStack(root: FiberRootNode) {
+  workInProgress = createWorkInProgress(root.current, {})
 }
 
 function workLoop() {
@@ -73,3 +76,34 @@ function completeUnitOfWork(unitOfWork: FiberNode) {
     workInProgress = completedWork
   } while (completedWork !== null)
 }
+
+/**
+ * @description 对传入的 fiber 调度其 updateQueue
+ */
+function scheduleUpdateOnFiber(fiber: FiberNode) {
+  const root = markUpdateFromFiberToRoot(fiber)
+  root !== null && renderRoot(root)
+}
+
+/**
+ * @description 从传入的 fiber 出发，寻找其所在 fiber tree 的 FiberRootNode
+ * @param fiber FiberNode
+ */
+function markUpdateFromFiberToRoot(fiber: FiberNode): FiberRootNode | null {
+  let node = fiber
+  let parent = fiber.return
+
+  while (parent !== null) {
+    node = parent
+    parent = parent.return
+  }
+
+  // node 此时是 hostRootFiber
+  if (node.tag === HostRoot) {
+    return node.stateNode as FiberRootNode
+  }
+
+  return null
+}
+
+export { scheduleUpdateOnFiber }
