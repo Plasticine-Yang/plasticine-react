@@ -66,4 +66,4 @@ pnpm play
 
 ## Tutorial
 
-- [jsx](https://plasticine-yang.github.io/react-source-learning/jsx.html)
+Please check [my personal blog site](https://plasticine-yang.github.io/react-source-learning/plasticine-react/introduction.html) for the complete tutorial.
