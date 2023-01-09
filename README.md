@@ -21,9 +21,9 @@ Build my own react. ⚡
 | Package    | Content     | Status |
 | ---------- | ----------- | ------ |
 | React      | JSX Runtime | ☑️     |
-| Reconciler | Fiber       | ️🔳    |
-| Reconciler | Update      | 🔳     |
-| playground | play        | 🔳     |
+| Reconciler | Fiber       | ☑️     |
+| Reconciler | Update      | ☑️     |
+| playground | play        | ☑️     |
 
 ## Usage
 
