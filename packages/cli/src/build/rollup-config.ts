@@ -1,20 +1,14 @@
+import type { BuildConfig, RollupBuildConfig } from './types'
+
 import { existsSync } from 'fs'
 import { resolve } from 'path'
 
-import {
-  defineConfig,
-  InputPluginOption,
-  ModuleFormat,
-  RollupOptions,
-} from 'rollup'
-
-import typescript from '@rollup/plugin-typescript'
-import json from '@rollup/plugin-json'
+import { defineConfig, ModuleFormat, RollupOptions } from 'rollup'
 
 import { PACKAGES_PATH } from '../constants'
 import { Logger } from '../logger'
 import { resolveJSONFile } from '../utils'
-import type { BuildConfig, RollupBuildConfig } from './types'
+import { resolveRollupPlugins } from './resolve-rollup-plugins'
 
 const logger = new Logger('build')
 
@@ -31,8 +25,8 @@ interface InternalCreateRollupConfigOptions {
  * @param packageName 包名
  * @returns rollup config
  */
-function createRollupConfig(options: RollupBuildConfig) {
-  const { packageName } = options
+function createRollupConfig(config: RollupBuildConfig) {
+  const { packageName } = config
 
   const rollupConfig: RollupOptions[] = []
 
@@ -50,8 +44,10 @@ function createRollupConfig(options: RollupBuildConfig) {
    * @description create rollup config internally
    */
   let warned = false
-  const _createRollupConfig = (options: InternalCreateRollupConfigOptions) => {
-    const { name, packageName, input, formats } = options
+  const _createRollupConfig = (
+    internalOptions: InternalCreateRollupConfigOptions,
+  ) => {
+    const { name, packageName, input, formats } = internalOptions
 
     const _rollupConfig = formats.map((format) => {
       const resolvedInput = resolveByTargetPackage(input)
@@ -72,8 +68,12 @@ function createRollupConfig(options: RollupBuildConfig) {
           name,
           format,
           file: resolveByTargetPackage(`dist/${format}/${packageName}.js`),
+          // 构建 UMD 产物时 对于 external 的依赖需要配置其 UMD 产物名称
+          globals: {
+            '@plasticine-react/shared': 'ReactShared',
+          },
         },
-        plugins: resolveRollupPlugins(),
+        plugins: resolveRollupPlugins(config),
         external: Object.keys(pkg.dependencies ?? {}),
       })
     })
@@ -132,10 +132,6 @@ function createRollupConfig(options: RollupBuildConfig) {
   run()
 
   return rollupConfig.flat()
-}
-
-function resolveRollupPlugins(): InputPluginOption {
-  return [typescript(), json()]
 }
 
 export { createRollupConfig }
