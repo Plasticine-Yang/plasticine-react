@@ -28,6 +28,7 @@ class FiberNode {
   public updateQueue: UpdateQueue<any> | null
 
   public flags: Flags
+  public subtreeFlags: Flags
 
   public alternate: FiberNode | null
 
@@ -59,6 +60,7 @@ class FiberNode {
 
     // Effects
     this.flags = NoFlags
+    this.subtreeFlags = NoFlags
 
     this.alternate = null
   }
@@ -113,6 +115,7 @@ function createWorkInProgress(
 
     // 清除副作用相关属性
     wip.flags = NoFlags
+    wip.subtreeFlags = NoFlags
   }
 
   // 发挥双缓冲的特性，尽可能复用 current 上的属性
