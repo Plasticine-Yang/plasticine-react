@@ -1,5 +1,11 @@
 # @plasticine-react/cli
 
+## 0.1.2
+
+### Patch Changes
+
+- feat(cli): add @rollup/plugin-replace and config **DEV** global value
+
 ## 0.1.1
 
 ### Patch Changes
