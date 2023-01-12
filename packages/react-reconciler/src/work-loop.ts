@@ -23,6 +23,8 @@ function renderRoot(root: FiberRootNode) {
  * @description 初始化工作
  */
 function prepareFreshStack(root: FiberRootNode) {
+  // workInProgress 此时指向 wip fiber tree 的 hostRootFiber
+  // 其 alternate 属性指向 current fiber tree 的 hostRootFiber
   workInProgress = createWorkInProgress(root.current, {})
 }
 
