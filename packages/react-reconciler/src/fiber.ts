@@ -73,7 +73,7 @@ class FiberRootNode {
   public container: Container
   public current: FiberNode
 
-  /** @description 更新流程结束后的 HostRootFiber */
+  /** @description reconcile 结束后的 HostRootFiber */
   public finishedWork: FiberNode | null
 
   constructor(container: Container, hostRootFiber: FiberNode) {
