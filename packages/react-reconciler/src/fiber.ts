@@ -1,11 +1,11 @@
-import type { Key, Props, Ref } from '@plasticine-react/shared'
+import type { Key, Props, ReactElement, Ref } from '@plasticine-react/shared'
 import type { Container } from './host-config'
 import type { UpdateQueue } from './update-queue'
 
 import { WorkTag } from './work-tags'
 import { Flags } from './fiber-flags'
 
-const { HostRoot } = WorkTag
+const { HostRoot, HostComponent, FunctionComponent } = WorkTag
 
 const { NoFlags } = Flags
 
@@ -24,8 +24,8 @@ class FiberNode {
 
   public pendingProps: Props
   public memoizedProps: Props | null
-  public memoizedState: unknown
-  public updateQueue: UpdateQueue<unknown> | null
+  public memoizedState: any
+  public updateQueue: UpdateQueue<any> | null
 
   public flags: Flags
 
@@ -125,4 +125,34 @@ function createWorkInProgress(
   return wip
 }
 
-export { FiberNode, FiberRootNode, createWorkInProgress }
+/**
+ * @description 根据传入的 ReactElement 创建其对应的 FiberNode
+ * @param element ReactElement
+ * @returns FiberNode
+ */
+function createFiberFromElement(element: ReactElement) {
+  const { type, props, key } = element
+
+  let fiberTag: WorkTag = FunctionComponent
+
+  if (typeof type === 'string') {
+    // <div>hello</div> --> HostComponent
+    fiberTag = HostComponent
+  } else if (typeof type !== 'function' && __DEV__) {
+    console.warn(
+      'createFiberFromElement: 尚未实现的 ReactElement type 类型',
+      element,
+    )
+  }
+
+  const fiber = new FiberNode(fiberTag, props, key)
+  fiber.type = type
+  return fiber
+}
+
+export {
+  FiberNode,
+  FiberRootNode,
+  createWorkInProgress,
+  createFiberFromElement,
+}
