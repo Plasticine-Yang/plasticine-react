@@ -15,8 +15,21 @@ function renderRoot(root: FiberRootNode) {
   // 初始化
   prepareFreshStack(root)
 
-  // 开启工作循环
-  workLoop()
+  try {
+    // 开启工作循环
+    workLoop()
+  } catch (error) {
+    if (__DEV__) {
+      console.error('workLoop 发生错误:', error)
+    }
+  }
+
+  // 工作循环结束后说明 reconcile 完毕 -- 更新 roo.finishedWork 指向完整的以 hostRootFiber 为根节点的 fiber tree
+  const finishedWork = root.current.alternate
+  root.finishedWork = finishedWork
+
+  // 接下来交给 commit 阶段去根据 reconcile 时给每个 fiber 打上的 flags 去进行宿主环境中的渲染
+  // commitRoot(root)
 }
 
 /**
