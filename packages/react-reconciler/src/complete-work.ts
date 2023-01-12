@@ -1,4 +1,5 @@
 import { FiberNode } from './fiber'
+import { Flags } from './fiber-flags'
 import {
   appendInitialChild,
   createInstance,
@@ -7,6 +8,7 @@ import {
 import { WorkTag } from './work-tags'
 
 const { HostRoot, HostComponent, HostText } = WorkTag
+const { NoFlags } = Flags
 
 /**
  * @description workLoop 的递归中的 `归` 阶段
@@ -19,6 +21,7 @@ function completeWork(workInProgress: FiberNode) {
 
   switch (workInProgress.tag) {
     case HostRoot:
+      bubbleProperties(workInProgress)
       break
 
     case HostComponent:
@@ -34,6 +37,8 @@ function completeWork(workInProgress: FiberNode) {
         // fiber 的 stateNode 指向 DOM
         workInProgress.stateNode = instance
       }
+
+      bubbleProperties(workInProgress)
       break
 
     case HostText:
@@ -51,6 +56,8 @@ function completeWork(workInProgress: FiberNode) {
         // fiber 的 stateNode 指向 DOM
         workInProgress.stateNode = textInstance
       }
+
+      bubbleProperties(workInProgress)
       break
 
     default:
@@ -101,6 +108,32 @@ function appendAllChildren(
     node.sibling.return = node.return
     node = node.sibling
   }
+}
+
+/**
+ * @description flags 冒泡 -- 收集 workInProgress 子 fiber tree 的 flags
+ * @param workInProgress 待操作 fiber
+ */
+function bubbleProperties(workInProgress: FiberNode) {
+  let subtreeFlags = NoFlags
+  let child = workInProgress.child
+
+  while (child !== null) {
+    // 收集 child 的子树 flags
+    subtreeFlags |= child.subtreeFlags
+
+    // 收集 child 自身的 flags
+    subtreeFlags |= child.flags
+
+    // 建立 child 和 workInProgress 的联系
+    child.return = workInProgress
+
+    // 收集 sibling 的 subtreeFlags
+    child = child.sibling
+  }
+
+  // 将收集结果存入 workInProgress 中
+  workInProgress.subtreeFlags |= subtreeFlags
 }
 
 export { completeWork }
