@@ -150,6 +150,7 @@ function createFiberFromElement(element: ReactElement) {
 
   const fiber = new FiberNode(fiberTag, props, key)
   fiber.type = type
+
   return fiber
 }
 
