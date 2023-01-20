@@ -1,9 +1,12 @@
 import { beginWork } from './begin-work'
+import { commitMutationEffects } from './commit-work'
 import { completeWork } from './complete-work'
 import { createWorkInProgress, FiberNode, FiberRootNode } from './fiber'
+import { Flags, MutationMask } from './fiber-flags'
 import { WorkTag } from './work-tags'
 
 const { HostRoot } = WorkTag
+const { NoFlags } = Flags
 
 let workInProgress: FiberNode | null = null
 
@@ -24,12 +27,12 @@ function renderRoot(root: FiberRootNode) {
     }
   }
 
-  // 工作循环结束后说明 reconcile 完毕 -- 更新 roo.finishedWork 指向完整的以 hostRootFiber 为根节点的 fiber tree
+  // 工作循环结束后说明 reconcile 完毕 -- 更新 root.finishedWork 指向完整的以 hostRootFiber 为根节点的 fiber tree
   const finishedWork = root.current.alternate
   root.finishedWork = finishedWork
 
   // 接下来交给 commit 阶段去根据 reconcile 时给每个 fiber 打上的 flags 去进行宿主环境中的渲染
-  // commitRoot(root)
+  commitRoot(root)
 }
 
 /**
@@ -119,6 +122,41 @@ function markUpdateFromFiberToRoot(fiber: FiberNode): FiberRootNode | null {
   }
 
   return null
+}
+
+/**
+ * @description commit 阶段入口
+ * @param root 带有 render 阶段产物 finishedWork 的 FiberRootNode
+ */
+function commitRoot(root: FiberRootNode) {
+  const finishedWork = root.finishedWork
+
+  if (finishedWork === null) return
+
+  if (__DEV__) {
+    console.log('commit 阶段开始 -- finishedWork:', finishedWork)
+  }
+
+  // finishedWork 变量已经保存了 root.finishedWork 的引用，可以重置 root.finishedWork
+  root.finishedWork = null
+
+  const subtreeHasEffects =
+    (finishedWork.subtreeFlags & MutationMask) !== NoFlags
+  const rootHasEffects = (finishedWork.flags & MutationMask) !== NoFlags
+
+  if (subtreeHasEffects || rootHasEffects) {
+    // beforeMutation
+    // mutation
+    commitMutationEffects(finishedWork)
+
+    // fiber tree 切换 -- 使当前的 finishedWork 成为 current fiber tree，作为下一次 render 阶段的旧 fiber tree
+    root.current = finishedWork
+
+    // layout
+  } else {
+    // 即便不进行任何操作，也要切换 fiber tree
+    root.current = finishedWork
+  }
 }
 
 export { scheduleUpdateOnFiber }
