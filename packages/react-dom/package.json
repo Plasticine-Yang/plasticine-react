@@ -1,6 +1,6 @@
 {
   "name": "@plasticine-react/react-dom",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "browser renderer of react.",
   "type": "module",
   "main": "./dist/cjs/react-dom.js",
