@@ -12,6 +12,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "allowJs": true,
+    "noEmit": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@plasticine-react/*": ["packages/*/src"]
