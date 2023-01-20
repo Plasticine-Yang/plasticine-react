@@ -92,9 +92,13 @@ function reconcileChildren(workInProgress: FiberNode, children?: ReactElement) {
 
   if (current !== null) {
     // update
-    reconcileChildFibers(workInProgress, current, children)
+    workInProgress.child = reconcileChildFibers(
+      workInProgress,
+      current,
+      children,
+    )
   } else {
     // mount
-    mountChildFibers(workInProgress, null, children)
+    workInProgress.child = mountChildFibers(workInProgress, null, children)
   }
 }
