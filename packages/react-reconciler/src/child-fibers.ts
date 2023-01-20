@@ -79,7 +79,6 @@ function ChildReconciler(shouldTrackEffects: boolean) {
     const fiber = createFiberFromElement(element)
 
     fiber.return = returnFiber
-    fiber.alternate = currentFiber
 
     return fiber
   }
@@ -100,7 +99,6 @@ function ChildReconciler(shouldTrackEffects: boolean) {
     const fiber = new FiberNode(HostText, { content }, null)
 
     fiber.return = returnFiber
-    fiber.alternate = currentFiber
 
     return fiber
   }
