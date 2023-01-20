@@ -48,7 +48,7 @@ function completeWork(workInProgress: FiberNode) {
         // mount
 
         // textInstance 是抽象出来的平台无关的文本节点实例 -- 比如 DOM 中创建文本节点 Text
-        const textInstance = createTextInstance(workInProgress.type, newProps)
+        const textInstance = createTextInstance(newProps.content)
 
         // HostText 不存在 child，所以不需要调用 appendAllChildren
         // appendAllChildren(textInstance, workInProgress)
