@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@plasticine-react/react": "workspace:*"
+    "@plasticine-react/react": "workspace:*",
+    "@plasticine-react/react-dom": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^4.9.3",

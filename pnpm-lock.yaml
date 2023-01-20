@@ -69,6 +69,14 @@ importers:
     dependencies:
       '@plasticine-react/shared': link:../shared
 
+  packages/react-dom:
+    specifiers:
+      '@plasticine-react/react-reconciler': workspace:*
+      '@plasticine-react/shared': workspace:*
+    dependencies:
+      '@plasticine-react/react-reconciler': link:../react-reconciler
+      '@plasticine-react/shared': link:../shared
+
   packages/react-reconciler:
     specifiers:
       '@plasticine-react/shared': workspace:*
@@ -81,10 +89,12 @@ importers:
   playground:
     specifiers:
       '@plasticine-react/react': workspace:*
+      '@plasticine-react/react-dom': workspace:^0.0.0
       typescript: ^4.9.3
       vite: ^4.0.0
     dependencies:
       '@plasticine-react/react': link:../packages/react
+      '@plasticine-react/react-dom': link:../packages/react-dom
     devDependencies:
       typescript: 4.9.4
       vite: 4.0.4
