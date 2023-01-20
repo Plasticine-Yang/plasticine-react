@@ -24,9 +24,8 @@
   "buildConfig": {
     "name": "React",
     "formats": [
-      "esm",
       "cjs",
-      "umd"
+      "esm"
     ],
     "additional": [
       {
@@ -36,24 +35,19 @@
             "name": "JSXRuntime",
             "formats": [
               "cjs",
-              "esm",
-              "umd"
+              "esm"
             ]
           },
           "jsx-dev-runtime": {
             "name": "JSXDevRuntime",
             "formats": [
               "cjs",
-              "esm",
-              "umd"
+              "esm"
             ]
           }
         }
       }
     ]
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "react",
