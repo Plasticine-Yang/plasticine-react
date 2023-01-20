@@ -16,13 +16,12 @@
   "buildConfig": {
     "name": "ReactShared",
     "formats": [
-      "esm",
       "cjs",
-      "umd"
+      "esm"
     ]
   },
   "keywords": [
-    "react",
+    "shared",
     "plasticine-react"
   ],
   "author": "Plasticine-Yang",
