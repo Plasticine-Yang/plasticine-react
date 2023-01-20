@@ -26,6 +26,18 @@ function appendInitialChild(...args: any[]) {
   return {} as any
 }
 
+/**
+ * @description 往 parent 中插入 child
+ */
+function appendChildToContainer(...args: any[]) {
+  return {} as any
+}
+
 export type { Container }
 
-export { createInstance, createTextInstance, appendInitialChild }
+export {
+  createInstance,
+  createTextInstance,
+  appendInitialChild,
+  appendChildToContainer,
+}
