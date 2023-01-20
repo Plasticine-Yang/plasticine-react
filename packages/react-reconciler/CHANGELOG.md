@@ -1,5 +1,17 @@
 # @plasticine-react/react-reconciler
 
+## 0.0.4
+
+### Patch Changes
+
+- refactor(react-reconciler): extract HostConfig interface and export initHostConfig function
+- feat(react-reconciler): add ReactReconciler as default export
+- feat(react-reconciler): fiber-flags -- add MutationMask
+- feat(react-reconciler): host-config -- add appendChildToContainer
+- feat(react-reconciler): commit phase -- mutatsion subphase -- commitPlacement
+- fix(react-reconciler): completeWork -- fix the params of createTextInstance
+- fix(react-reconciler): fix the workInProgress.child not point to the reconciled child
+
 ## 0.0.3
 
 ### Patch Changes
