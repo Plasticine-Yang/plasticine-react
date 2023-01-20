@@ -71,6 +71,7 @@ function createRollupConfig(config: RollupBuildConfig) {
           // 构建 UMD 产物时 对于 external 的依赖需要配置其 UMD 产物名称
           globals: {
             '@plasticine-react/shared': 'ReactShared',
+            '@plasticine-react/react-reconciler': 'ReactReconciler',
           },
         },
         plugins: resolveRollupPlugins(config),
