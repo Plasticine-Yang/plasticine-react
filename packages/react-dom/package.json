@@ -1,0 +1,36 @@
+{
+  "name": "@plasticine-react/react-dom",
+  "version": "0.0.0",
+  "description": "browser renderer of react.",
+  "type": "module",
+  "main": "./dist/cjs/react-dom.js",
+  "module": "./dist/esm/react-dom.js",
+  "types": "./dist/react-dom.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/react-dom.js",
+      "import": "./dist/esm/react-dom.js",
+      "types": "./dist/react-dom.d.ts"
+    }
+  },
+  "buildConfig": {
+    "name": "ReactDOM",
+    "formats": [
+      "cjs",
+      "esm"
+    ]
+  },
+  "keywords": [
+    "react-dom",
+    "plasticine-react"
+  ],
+  "author": "Plasticine-Yang",
+  "license": "MIT",
+  "dependencies": {
+    "@plasticine-react/shared": "workspace:*",
+    "@plasticine-react/react-reconciler": "workspace:*"
+  },
+  "peerDependencies": {
+    "@plasticine-react/react": "workspace:*"
+  }
+}
