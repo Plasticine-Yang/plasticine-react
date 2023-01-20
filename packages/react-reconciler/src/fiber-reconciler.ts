@@ -12,7 +12,7 @@ const { HostRoot } = WorkTag
 /**
  * @description 执行 createRoot 的时候会调用该函数初始化 FiberRootNode 和 hostRootFiber，并将 hostRootFiber 和更新机制关联起来
  */
-function createContainer(container: Container) {
+function createContainer<T = Container>(container: T) {
   const hostRootFiber = new FiberNode(HostRoot, {}, null)
   const root = new FiberRootNode(container, hostRootFiber)
 
