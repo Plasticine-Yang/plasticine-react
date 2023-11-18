@@ -1,6 +1,6 @@
-# node-monorepo-boilerplate
+# plasticine-react
 
-A boilerplate for developing node.js applications or libraries with monorepo.
+A project to implement a mini version of react.
 
 ## Usage
 
