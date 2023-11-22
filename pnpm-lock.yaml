@@ -69,6 +69,15 @@ importers:
         specifier: ^4.4.5
         version: 4.4.5(@types/node@20.9.1)
 
+  demos/how-react-update:
+    devDependencies:
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+      vite:
+        specifier: ^4.4.5
+        version: 4.4.5(@types/node@20.9.1)
+
   demos/traditional-object-oriented-ui-programming:
     devDependencies:
       typescript:
@@ -77,6 +86,15 @@ importers:
       vite:
         specifier: ^4.4.5
         version: 4.4.9(@types/node@20.9.1)
+
+  demos/what-does-react-mount-do:
+    devDependencies:
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+      vite:
+        specifier: ^4.4.5
+        version: 4.4.5(@types/node@20.9.1)
 
   packages/core: {}
 
@@ -1413,6 +1431,7 @@ packages:
     resolution: {integrity: sha512-OrEyIfpxSsMal44JpEVx9AEcGpdBQG1ZuWISAanaQTSMeStBW+oHWwOkoqR54bw3x8heP8gBOyoJiGg+fLY8qQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true
@@ -1421,6 +1440,7 @@ packages:
     resolution: {integrity: sha512-1H7wBbQuE6igQdxMSTjtFfD+DGAudcYWhp106z/9zBA8OQhsJRnemO4XGavdzHpGhRtRxbgmUGdO3YQgrWf2RA==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
@@ -1429,6 +1449,7 @@ packages:
     resolution: {integrity: sha512-FVyFI13tXw5aE65sZdBpNjPVIi4Q5mARnL/39UIkxvSgRAIqCo5sCpCELk0JtXHGee2owZz5aNLbWNfBHzr71Q==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true
@@ -1437,6 +1458,7 @@ packages:
     resolution: {integrity: sha512-eBPYl2sLpH/o8qbSz6vPwWlDyThnQjJfcDOGFbNjmjb44XKC1F5dQfakOsADRVrXCNzM6ZsSIPDG5dc6HHLNFg==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
