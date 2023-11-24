@@ -105,24 +105,26 @@ function mount(element, containerNode) {
   return publicInstance
 }
 
-function Button() {
-  return {
-    type: 'div',
+export function setupInternalInstanceDemo() {
+  function Button() {
+    return {
+      type: 'div',
+      props: {},
+    }
+  }
+
+  function App() {
+    return {
+      type: Button,
+      props: {},
+    }
+  }
+
+  const appElement = {
+    type: App,
     props: {},
   }
-}
 
-function App() {
-  return {
-    type: Button,
-    props: {},
-  }
+  const rootEl = document.querySelector('#root')
+  mount(appElement, rootEl)
 }
-
-const appElement = {
-  type: App,
-  props: {},
-}
-
-const rootEl = document.querySelector('#root')
-mount(appElement, rootEl)
