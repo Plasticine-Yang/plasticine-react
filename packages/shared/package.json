@@ -1,5 +1,5 @@
 {
-  "name": "@plasticine-react/core",
+  "name": "@plasticine-react/shared",
   "version": "0.0.0",
   "type": "module",
   "files": [
