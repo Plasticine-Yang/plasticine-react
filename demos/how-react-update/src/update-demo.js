@@ -153,7 +153,29 @@ class HostComponent {
     return this.node
   }
 
-  // receive(nextElement) {}
+  receive(nextElement) {
+    const node = this.node
+    const prevElement = this.currentElement
+    const prevProps = prevElement.props
+    const nextProps = nextElement.props
+
+    // Set nextElement as currentElement
+    this.currentElement = nextElement
+
+    // Remove old attributes.
+    for (const propName of Object.keys(prevProps)) {
+      if (propName !== 'children' && !Object.prototype.hasOwnProperty.call(nextProps, propName)) {
+        node.removeAttribute(propName)
+      }
+    }
+
+    // Set next attributes.
+    for (const propName of Object.keys(nextProps)) {
+      if (propName !== 'children') {
+        node.setAttribute(propName, nextProps[propName])
+      }
+    }
+  }
 }
 
 function instantiateComponent(element) {
