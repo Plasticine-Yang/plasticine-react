@@ -22,5 +22,8 @@
     "build": "tsup --minify",
     "lint": "eslint src --fix",
     "test": "vitest"
+  },
+  "dependencies": {
+    "@plasticine-react/shared": "workspace:*"
   }
 }
