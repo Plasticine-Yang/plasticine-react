@@ -175,6 +175,102 @@ class HostComponent {
         node.setAttribute(propName, nextProps[propName])
       }
     }
+
+    // Get prevChildren and nextChildren - array of ReactElement
+    let prevChildren = prevProps.children ?? []
+    let nextChildren = nextProps.children ?? []
+
+    if (!Array.isArray(prevChildren)) {
+      prevChildren = [prevChildren]
+    }
+
+    if (!Array.isArray(nextChildren)) {
+      nextChildren = [nextChildren]
+    }
+
+    // Get prevRenderedChildren and nextRenderedChildren - array of internal instances
+    const prevRenderedChildren = this.renderedChildren
+    const nextRenderedChildren = []
+
+    // As we iterate over children, we will add operation to the array.
+    const operationQueue = []
+
+    // 新增、更新和替换操作
+    for (let i = 0; i < nextChildren.length; i++) {
+      const prevChildElement = prevChildren.at(i)
+      const nextChildElement = nextChildren.at(i)
+      const prevChildComponent = prevRenderedChildren.at(i)
+
+      // 之前没有现在有 - 新增操作
+      // 为新的 ReactElement 创建内部实例
+      if (!prevChildComponent && nextChildElement) {
+        const nextChildComponent = instantiateComponent(nextChildElement)
+        const node = nextChildComponent.mount()
+
+        // 记录操作 - 新增 DOM
+        operationQueue.push({ type: 'ADD', node })
+        nextRenderedChildren.push(nextChildComponent)
+
+        continue
+      }
+
+      // 只在 type 相同时才能进行更新，复用已有的 DOM，否则就进行替换
+      const canUpdate = prevChildElement.type === nextChildElement.type
+
+      // 替换
+      if (!canUpdate) {
+        const prevChildNode = prevChildComponent.getHostNode()
+        prevChildNode.unmount()
+
+        const nextChildComponent = instantiateComponent(nextChildElement)
+        const nextChildNode = nextChildComponent.mount()
+
+        // 记录操作 - 替换 DOM
+        operationQueue.push({ type: 'REPLACE', prevChildNode, nextChildNode })
+        nextRenderedChildren.push(nextChildComponent)
+
+        continue
+      }
+
+      // 更新 - 调用之前的内部实例的 receive 方法，传入新的 ReactElement 即可
+      prevChildComponent.receive(nextChildElement)
+      nextRenderedChildren.push(prevChildComponent)
+    }
+
+    // 删除
+    for (let i = nextChildren.length; i < prevChildren.length; i++) {
+      const prevChildComponent = prevRenderedChildren.at(i)
+      const node = prevChildComponent.getHostNode()
+
+      // 卸载内部组件实例
+      prevChildComponent?.unmount()
+
+      // 记录操作 - 卸载 DOM
+      operationQueue.push({ type: 'REMOVE', node })
+    }
+
+    // 消费操作队列，执行 DOM 操作
+    while (operationQueue.length > 0) {
+      const operation = operationQueue.shift()
+
+      switch (operation.type) {
+        case 'ADD':
+          this.node.appendChild(operation.node)
+          break
+
+        case 'REPLACE':
+          this.node.replaceChild(operation.nextChildNode, operation.prevChildNode)
+          break
+
+        case 'REMOVE':
+          this.node.removeChild(operation.node)
+          break
+
+        default:
+          console.warn('unknown operation type')
+          break
+      }
+    }
   }
 }
 
@@ -189,8 +285,17 @@ function instantiateComponent(element) {
 }
 
 function mount(element, containerNode) {
-  // Destroy any existing tree.
+  // Check for an existing tree.
   if (containerNode.firstChild) {
+    const prevNode = containerNode.firstChild
+    const prevRootComponent = prevNode.__internalInstance
+    const prevElement = prevRootComponent.currentElement
+
+    if (prevElement.type === element.type) {
+      prevRootComponent.receive(element)
+      return
+    }
+
     unmount(containerNode)
   }
 
@@ -217,29 +322,84 @@ function unmount(containerNode) {
 }
 
 export function setupUpdateDemo() {
-  function Button() {
+  function Button(props) {
     return {
-      type: 'div',
-      props: {},
+      type: 'button',
+      props,
     }
   }
 
-  function App() {
+  function Foo() {
     return {
-      type: Button,
-      props: {},
+      type: 'div',
+      props: {
+        id: 'foo',
+      },
+    }
+  }
+
+  function App(props) {
+    const { buttonProps, shouldRenderFoo = false } = props
+
+    if (shouldRenderFoo) {
+      return {
+        type: Foo,
+        props: {},
+      }
+    }
+
+    return {
+      type: 'div',
+      props: {
+        id: 'app',
+        children: [
+          {
+            type: Button,
+            props: buttonProps,
+          },
+          {
+            type: Button,
+            props: buttonProps,
+          },
+        ],
+      },
     }
   }
 
   const appElement = {
     type: App,
-    props: {},
+    props: {
+      buttonProps: {
+        size: 'medium',
+      },
+    },
   }
 
+  // first render
   const rootEl = document.querySelector('#root')
   mount(appElement, rootEl)
 
   setTimeout(() => {
-    unmount(rootEl)
+    // update buttonProps
+    const appElement1 = {
+      type: App,
+      props: {
+        buttonProps: {
+          size: 'large',
+        },
+      },
+    }
+    mount(appElement1, rootEl)
   }, 3000)
+
+  setTimeout(() => {
+    // replace Button with Foo
+    const appElement2 = {
+      type: App,
+      props: {
+        shouldRenderFoo: true,
+      },
+    }
+    mount(appElement2, rootEl)
+  }, 6000)
 }
