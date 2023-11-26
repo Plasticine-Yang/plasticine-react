@@ -1,20 +1,15 @@
+import type { ClassComponent } from '@/class-component'
 import { classComponentSymbol } from '@/symbols'
-import { BaseProps, ClassComponent, FunctionComponent, ReactElementType } from '@/types'
+import type { FunctionComponent, ReactElementType } from '@/types'
 
-export function isHostComponent<Props extends BaseProps = BaseProps>(
-  elementType: ReactElementType<Props>,
-): elementType is string {
+export function isHostComponent(elementType: ReactElementType): elementType is string {
   return typeof elementType === 'string'
 }
 
-export function isFunctionComponent<Props extends BaseProps = BaseProps>(
-  elementType: ReactElementType<Props>,
-): elementType is FunctionComponent<Props> {
+export function isFunctionComponent(elementType: ReactElementType): elementType is FunctionComponent {
   return typeof elementType === 'function'
 }
 
-export function isClassComponent<Props extends BaseProps = BaseProps>(
-  elementType: ReactElementType<Props>,
-): elementType is ClassComponent<Props> {
-  return typeof elementType === 'function' && (elementType as unknown as typeof ClassComponent)[classComponentSymbol]
+export function isClassComponent(elementType: ReactElementType): elementType is typeof ClassComponent {
+  return typeof elementType === 'function' && (elementType as typeof ClassComponent)[classComponentSymbol]
 }
