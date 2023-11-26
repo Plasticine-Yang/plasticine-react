@@ -1,14 +1,32 @@
-import type { BaseProps, ReactElement } from '@plasticine-react/shared'
+import { isClassComponent, isHostComponent, type FunctionComponent, type ReactElement } from '@plasticine-react/shared'
 
-import type { ReconcilerComponent } from '@/types'
+export class CompositeComponent {
+  public currentElement: ReactElement
 
-export class CompositeComponent<Props extends BaseProps = BaseProps> implements ReconcilerComponent<Props> {
-  public getHostNode(): unknown {}
+  constructor(element: ReactElement) {
+    this.currentElement = element
+  }
 
-  public mount(): ReactElement<Props> {}
+  public mount(element?: ReactElement): ReactElement {
+    const resolvedElement = element ?? this.currentElement
+    const { type, props } = resolvedElement
 
-  public unmount(): void {}
+    if (isHostComponent(type)) {
+      // 不处理 HostComponent
+      return resolvedElement
+    }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public receive<NextElementProps extends BaseProps = BaseProps>(nextElement: ReactElement<NextElementProps>): void {}
+    let renderedElement: ReactElement
+
+    if (isClassComponent(type)) {
+      const classComponentInstance = new type(props)
+
+      classComponentInstance.componentWillMount()
+      renderedElement = classComponentInstance.render()
+    } else {
+      renderedElement = (type as FunctionComponent)(props)
+    }
+
+    return this.mount(renderedElement)
+  }
 }
