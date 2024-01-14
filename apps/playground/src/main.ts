@@ -1,24 +1,26 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { mount, HostConfig, ReactElement } from '@plasticine-react/stack-reconciler'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const hostConfig: HostConfig<HTMLElement> = {
+  createHostNode(type) {
+    return document.createElement(type)
+  },
+  setHostNodeAttribute(hostNode, key, value) {
+    hostNode.setAttribute(key as string, value as string)
+  },
+  appendChild(hostNode, childNode) {
+    hostNode.appendChild(childNode)
+  },
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+function App() {
+  return { type: 'div', props: { name: 'foo' } } as ReactElement
+}
+
+const rootElement: ReactElement = {
+  type: App,
+  props: {},
+}
+
+const mountedElement = mount(rootElement, hostConfig)
+
+console.log(mountedElement)

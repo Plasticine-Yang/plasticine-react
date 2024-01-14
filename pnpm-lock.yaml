@@ -61,6 +61,10 @@ importers:
         version: 0.34.6
 
   apps/playground:
+    dependencies:
+      '@plasticine-react/stack-reconciler':
+        specifier: workspace:*
+        version: link:../../packages/stack-reconciler
     devDependencies:
       typescript:
         specifier: ^5.0.2
