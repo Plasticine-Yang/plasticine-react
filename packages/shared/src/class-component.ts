@@ -1,8 +1,8 @@
 import { classComponentSymbol } from '@/symbols'
 
-import type { BaseProps, ReactElement } from '@/types'
+import type { ReactElement, ReactElementProps } from '@/types'
 
-export class ClassComponent<Props extends BaseProps = BaseProps> {
+export class ClassComponent<Props extends ReactElementProps = ReactElementProps> {
   public props: Props
 
   /** 标识类组件 */
