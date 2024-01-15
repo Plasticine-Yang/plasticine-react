@@ -12,8 +12,28 @@ const hostConfig: HostConfig<HTMLElement> = {
   },
 }
 
+function Foo() {
+  return {
+    type: 'div',
+    props: {
+      name: 'foo',
+      children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+    },
+  } as ReactElement
+}
+
 function App() {
-  return { type: 'div', props: { name: 'foo' } } as ReactElement
+  return {
+    type: 'div',
+    props: {
+      name: 'app',
+      children: [
+        { type: 'p', props: { id: 'child1', className: 'child1' } },
+        { type: 'span', props: { id: 'child2', className: 'child2' } },
+        { type: Foo, props: {} },
+      ],
+    },
+  } as ReactElement
 }
 
 const rootElement: ReactElement = {
@@ -24,3 +44,7 @@ const rootElement: ReactElement = {
 const mountedElement = mount(rootElement, hostConfig)
 
 console.log(mountedElement)
+
+const rootContainer = document.querySelector<HTMLDivElement>('#root')!
+
+rootContainer.appendChild(mountedElement)
