@@ -1,6 +1,7 @@
 import type { ReactElement } from '@plasticine-react/shared'
 
 import type { MountComponentOptions } from './types'
+import { SPECIAL_PROPERTIES } from './constants'
 
 export function mountHostComponent<HostNode>(
   element: ReactElement,
@@ -17,7 +18,9 @@ export function mountHostComponent<HostNode>(
   const hostNode = createHostNode(hostComponentType)
 
   for (const propName of Object.keys(props)) {
-    setHostNodeAttribute(hostNode, propName, props[propName])
+    if (!SPECIAL_PROPERTIES.includes(propName)) {
+      setHostNodeAttribute(hostNode, propName, props[propName])
+    }
   }
 
   for (const childElement of resolvedChildren) {
