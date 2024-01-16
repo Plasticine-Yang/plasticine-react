@@ -1,8 +1,8 @@
 import { ReactElement, isHostComponent } from '@plasticine-react/shared'
 
+import { SPECIAL_PROPERTIES } from '@/constants'
 import { BaseComponentManager } from './base-component-manager'
 import type { ComponentManager, ComponentManagerConstructorOptions } from './types'
-import { SPECIAL_PROPERTIES } from '@/constants'
 
 export class HostComponentManager<HostNode> extends BaseComponentManager<HostNode> {
   public element: ReactElement
@@ -23,25 +23,40 @@ export class HostComponentManager<HostNode> extends BaseComponentManager<HostNod
     this.hostNode = null
   }
 
-  public mount(): HostNode {
+  private createHostNode() {
     const { element, options } = this
-    const { props } = element
-    const { children } = props
-    const { hostConfig, createComponentManager } = options
-
-    const { createHostNode, setHostNodeAttribute, appendChild } = hostConfig
-
+    const { hostConfig } = options
+    const { createHostNode } = hostConfig
     const hostComponentType = element.type as string
-    const resolvedChildren = (Array.isArray(children) ? children : [children]).filter(Boolean) as ReactElement[]
 
     const hostNode = createHostNode(hostComponentType)
-    this.hostNode = hostNode
+
+    return hostNode
+  }
+
+  private setPropsToHostNode(hostNode: HostNode) {
+    const { element, options } = this
+    const { props } = element
+    const { hostConfig } = options
+
+    const { setHostNodeAttribute } = hostConfig
 
     for (const propName of Object.keys(props)) {
       if (!SPECIAL_PROPERTIES.includes(propName)) {
         setHostNodeAttribute(hostNode, propName, props[propName])
       }
     }
+  }
+
+  private mountHostNodeChildren(hostNode: HostNode) {
+    const { element, options } = this
+    const { props } = element
+    const { children } = props
+    const { hostConfig, createComponentManager } = options
+
+    const { appendChild } = hostConfig
+
+    const resolvedChildren = (Array.isArray(children) ? children : [children]).filter(Boolean) as ReactElement[]
 
     const resolvedChildElementManagers = resolvedChildren.map((childElement) =>
       createComponentManager(childElement, hostConfig),
@@ -52,6 +67,14 @@ export class HostComponentManager<HostNode> extends BaseComponentManager<HostNod
     for (const childHostNode of childHostNodes) {
       appendChild(hostNode, childHostNode)
     }
+  }
+
+  public mount(): HostNode {
+    const hostNode = this.createHostNode()
+
+    this.hostNode = hostNode
+    this.setPropsToHostNode(hostNode)
+    this.mountHostNodeChildren(hostNode)
 
     return hostNode
   }

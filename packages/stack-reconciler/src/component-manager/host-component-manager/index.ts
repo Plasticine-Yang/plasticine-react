@@ -1,0 +1,1 @@
+export { HostComponentManager } from './manager'
