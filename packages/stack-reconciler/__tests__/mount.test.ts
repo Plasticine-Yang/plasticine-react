@@ -18,13 +18,9 @@ describe('mount', () => {
     const mountedElement = mount(rootElement, testingHostConfig)
 
     expect(mountedElement).toMatchInlineSnapshot(`
-      TestingHostNode {
-        "attributes": {
-          "name": "foo",
-        },
-        "children": [],
-        "type": "div",
-      }
+      <div
+        name="foo"
+      />
     `)
   })
 
@@ -85,46 +81,26 @@ describe('mount', () => {
     const mountedElement = mount(rootElement, testingHostConfig)
 
     expect(mountedElement).toMatchInlineSnapshot(`
-      TestingHostNode {
-        "attributes": {
-          "name": "app",
-        },
-        "children": [
-          TestingHostNode {
-            "attributes": {
-              "className": "child1",
-              "id": "child1",
-            },
-            "children": [],
-            "type": "p",
-          },
-          TestingHostNode {
-            "attributes": {
-              "className": "child2",
-              "id": "child2",
-            },
-            "children": [],
-            "type": "span",
-          },
-          TestingHostNode {
-            "attributes": {
-              "name": "foo",
-            },
-            "children": [
-              TestingHostNode {
-                "attributes": {
-                  "className": "foo-child",
-                  "id": "foo-child",
-                },
-                "children": [],
-                "type": "p",
-              },
-            ],
-            "type": "div",
-          },
-        ],
-        "type": "div",
-      }
+      <div
+        name="app"
+      >
+        <p
+          classname="child1"
+          id="child1"
+        />
+        <span
+          classname="child2"
+          id="child2"
+        />
+        <div
+          name="foo"
+        >
+          <p
+            classname="foo-child"
+            id="foo-child"
+          />
+        </div>
+      </div>
     `)
   })
 })

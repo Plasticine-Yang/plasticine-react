@@ -25,5 +25,9 @@
   },
   "dependencies": {
     "@plasticine-react/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.6",
+    "jsdom": "^23.2.0"
   }
 }
