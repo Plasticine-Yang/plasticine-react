@@ -85,18 +85,18 @@ describe('mount', () => {
         name="app"
       >
         <p
-          classname="child1"
+          class="child1"
           id="child1"
         />
         <span
-          classname="child2"
+          class="child2"
           id="child2"
         />
         <div
           name="foo"
         >
           <p
-            classname="foo-child"
+            class="foo-child"
             id="foo-child"
           />
         </div>

@@ -15,7 +15,12 @@ export function setPropsToHostNode<HostNode>(
 
   for (const propName of Object.keys(props)) {
     if (!SPECIAL_PROPERTIES.includes(propName)) {
-      setHostNodeAttribute(hostNode, propName, props[propName])
+      // handle propName that need to be rewritten
+      if (propName === 'className') {
+        setHostNodeAttribute(hostNode, 'class', props[propName])
+      } else {
+        setHostNodeAttribute(hostNode, propName, props[propName])
+      }
     }
   }
 }
