@@ -35,4 +35,56 @@ describe('class component life cycle', () => {
 
     expect(componentWillMountFn).toHaveBeenCalledTimes(1)
   })
+
+  test('should trigger componentWillMount with nested element', () => {
+    const componentWillMountAppFn = vi.fn()
+    const componentWillMountFooFn = vi.fn()
+
+    class Foo extends ClassComponent {
+      componentWillMount(): void {
+        componentWillMountFooFn()
+      }
+
+      render(): ReactElement<ReactElementProps> {
+        expect(componentWillMountFooFn).toHaveBeenCalledTimes(1)
+
+        return {
+          type: 'div',
+          props: {
+            name: 'foo',
+          },
+        }
+      }
+    }
+
+    class App extends ClassComponent {
+      componentWillMount(): void {
+        componentWillMountAppFn()
+      }
+
+      render(): ReactElement<ReactElementProps> {
+        expect(componentWillMountAppFn).toHaveBeenCalledTimes(1)
+
+        return {
+          type: 'div',
+          props: {
+            name: 'app',
+            children: {
+              type: Foo,
+              props: {},
+            },
+          },
+        }
+      }
+    }
+
+    const rootElement: ReactElement = {
+      type: App,
+      props: {},
+    }
+
+    mount(rootElement, testingHostConfig)
+    expect(componentWillMountAppFn).toHaveBeenCalledTimes(1)
+    expect(componentWillMountFooFn).toHaveBeenCalledTimes(1)
+  })
 })
