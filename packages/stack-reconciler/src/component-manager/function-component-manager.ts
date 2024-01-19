@@ -5,7 +5,7 @@ import type { ComponentManager, ComponentManagerConstructorOptions } from './typ
 
 export class FunctionComponentManager<HostNode> extends BaseComponentManager<HostNode> {
   public element: ReactElement
-  public resolvedElementManager: ComponentManager<HostNode> | null
+  public resolvedElementComponentManager: ComponentManager<HostNode> | null
 
   constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode>) {
     if (!isFunctionComponent(element.type)) {
@@ -17,7 +17,7 @@ export class FunctionComponentManager<HostNode> extends BaseComponentManager<Hos
     super(options)
 
     this.element = element
-    this.resolvedElementManager = null
+    this.resolvedElementComponentManager = null
   }
 
   public mount(): HostNode {
@@ -28,12 +28,14 @@ export class FunctionComponentManager<HostNode> extends BaseComponentManager<Hos
     const resolvedElement = functionComponent(element.props)
     const resolvedElementManager = createComponentManager(resolvedElement, hostConfig)
 
-    this.resolvedElementManager = resolvedElementManager
+    this.resolvedElementComponentManager = resolvedElementManager
 
     return resolvedElementManager.mount()
   }
 
   public unmount(): void {
-    // do nothing
+    const { resolvedElementComponentManager } = this
+
+    resolvedElementComponentManager?.unmount()
   }
 }

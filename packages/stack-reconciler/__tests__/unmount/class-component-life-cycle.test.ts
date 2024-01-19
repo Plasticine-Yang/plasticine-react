@@ -87,4 +87,47 @@ describe('class component life cycle', () => {
     expect(componentWillUnmountAppFn).toHaveBeenCalledTimes(1)
     expect(componentWillUnmountFooFn).toHaveBeenCalledTimes(1)
   })
+
+  test('should trigger componentWillUnmount when class component nested in function component', () => {
+    const componentWillUnmountFooFn = vi.fn()
+
+    class Foo extends ClassComponent {
+      componentWillUnmount(): void {
+        componentWillUnmountFooFn()
+      }
+
+      render(): ReactElement<ReactElementProps> {
+        return {
+          type: 'div',
+          props: {
+            name: 'foo',
+          },
+        }
+      }
+    }
+
+    function App() {
+      return {
+        type: 'div',
+        props: {
+          name: 'app',
+          children: {
+            type: Foo,
+            props: {},
+          },
+        },
+      }
+    }
+
+    const rootElement: ReactElement = {
+      type: App,
+      props: {},
+    }
+
+    const { componentManager } = mount(rootElement, testingHostConfig)
+    expect(componentWillUnmountFooFn).not.toHaveBeenCalled()
+
+    componentManager.unmount()
+    expect(componentWillUnmountFooFn).toHaveBeenCalledTimes(1)
+  })
 })
