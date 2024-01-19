@@ -121,4 +121,120 @@ describe('mount children', () => {
       </div>
     `)
   })
+
+  test('should mount children when function component nested in class component', () => {
+    function Foo() {
+      return {
+        type: 'div',
+        props: {
+          name: 'foo',
+          children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+        },
+      }
+    }
+
+    class App extends ClassComponent {
+      render(): ReactElement<ReactElementProps> {
+        return {
+          type: 'div',
+          props: {
+            name: 'app',
+            children: [
+              { type: 'p', props: { id: 'child1', className: 'child1' } },
+              { type: 'span', props: { id: 'child2', className: 'child2' } },
+              { type: Foo, props: {} },
+            ],
+          },
+        }
+      }
+    }
+
+    const rootElement: ReactElement = {
+      type: App,
+      props: {},
+    }
+
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+
+    expect(mountedHostNode).toMatchInlineSnapshot(`
+      <div
+        name="app"
+      >
+        <p
+          class="child1"
+          id="child1"
+        />
+        <span
+          class="child2"
+          id="child2"
+        />
+        <div
+          name="foo"
+        >
+          <p
+            class="foo-child"
+            id="foo-child"
+          />
+        </div>
+      </div>
+    `)
+  })
+
+  test('should mount children when class component nested in function component', () => {
+    class Foo extends ClassComponent {
+      render(): ReactElement<ReactElementProps> {
+        return {
+          type: 'div',
+          props: {
+            name: 'foo',
+            children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+          },
+        }
+      }
+    }
+
+    function App() {
+      return {
+        type: 'div',
+        props: {
+          name: 'app',
+          children: [
+            { type: 'p', props: { id: 'child1', className: 'child1' } },
+            { type: 'span', props: { id: 'child2', className: 'child2' } },
+            { type: Foo, props: {} },
+          ],
+        },
+      }
+    }
+
+    const rootElement: ReactElement = {
+      type: App,
+      props: {},
+    }
+
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+
+    expect(mountedHostNode).toMatchInlineSnapshot(`
+      <div
+        name="app"
+      >
+        <p
+          class="child1"
+          id="child1"
+        />
+        <span
+          class="child2"
+          id="child2"
+        />
+        <div
+          name="foo"
+        >
+          <p
+            class="foo-child"
+            id="foo-child"
+          />
+        </div>
+      </div>
+    `)
+  })
 })
