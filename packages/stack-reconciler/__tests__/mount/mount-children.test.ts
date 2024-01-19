@@ -36,9 +36,9 @@ describe('mount children', () => {
       props: {},
     }
 
-    const mountedElement = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
 
-    expect(mountedElement).toMatchInlineSnapshot(`
+    expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
         name="app"
       >
@@ -96,9 +96,9 @@ describe('mount children', () => {
       props: {},
     }
 
-    const mountedElement = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
 
-    expect(mountedElement).toMatchInlineSnapshot(`
+    expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
         name="app"
       >

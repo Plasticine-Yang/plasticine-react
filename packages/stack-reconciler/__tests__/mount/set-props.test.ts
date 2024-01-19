@@ -16,9 +16,9 @@ describe('mount - set props of function component', () => {
       props: {},
     }
 
-    const mountedElement = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
 
-    expect(mountedElement).toMatchInlineSnapshot(`
+    expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
         name="app"
       />
@@ -44,9 +44,9 @@ describe('mount - set props of function component', () => {
       props: {},
     }
 
-    const mountedElement = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
 
-    expect(Object.keys(mountedElement.attributes).includes('children')).toBeFalsy()
+    expect(Object.keys(mountedHostNode.attributes).includes('children')).toBeFalsy()
   })
 })
 
@@ -63,9 +63,9 @@ describe('mount - set props of class component', () => {
       props: {},
     }
 
-    const mountedElement = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
 
-    expect(mountedElement).toMatchInlineSnapshot(`
+    expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
         name="app"
       />
@@ -91,8 +91,8 @@ describe('mount - set props of class component', () => {
       props: {},
     }
 
-    const mountedElement = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, testingHostConfig)
 
-    expect(Object.keys(mountedElement.attributes).includes('children')).toBeFalsy()
+    expect(Object.keys(mountedHostNode.attributes).includes('children')).toBeFalsy()
   })
 })
