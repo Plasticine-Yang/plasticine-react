@@ -1,13 +1,14 @@
-import type { ReactElement } from '@plasticine-react/shared'
+import type { ReactElement, ReactElementProps } from '@plasticine-react/shared'
 
+import { ClassComponent } from '@/index'
 import { mount } from '@/mount'
 
-import { testingHostConfig } from './testing-utils'
+import { testingHostConfig } from '../testing-utils'
 
-describe('mount', () => {
+describe('mount - set props of function component', () => {
   test('should set props', () => {
     function App() {
-      return { type: 'div', props: { name: 'foo' } } as ReactElement
+      return { type: 'div', props: { name: 'app' } } as ReactElement
     }
 
     const rootElement: ReactElement = {
@@ -19,7 +20,7 @@ describe('mount', () => {
 
     expect(mountedElement).toMatchInlineSnapshot(`
       <div
-        name="foo"
+        name="app"
       />
     `)
   })
@@ -29,7 +30,7 @@ describe('mount', () => {
       return {
         type: 'div',
         props: {
-          name: 'foo',
+          name: 'app',
           children: [
             { type: 'p', props: { id: 'child1', className: 'child1' } },
             { type: 'span', props: { id: 'child2', className: 'child2' } },
@@ -47,30 +48,14 @@ describe('mount', () => {
 
     expect(Object.keys(mountedElement.attributes).includes('children')).toBeFalsy()
   })
+})
 
-  test('should mount children', () => {
-    function Foo() {
-      return {
-        type: 'div',
-        props: {
-          name: 'foo',
-          children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
-        },
-      } as ReactElement
-    }
-
-    function App() {
-      return {
-        type: 'div',
-        props: {
-          name: 'app',
-          children: [
-            { type: 'p', props: { id: 'child1', className: 'child1' } },
-            { type: 'span', props: { id: 'child2', className: 'child2' } },
-            { type: Foo, props: {} },
-          ],
-        },
-      } as ReactElement
+describe('mount - set props of class component', () => {
+  test('should set props', () => {
+    class App extends ClassComponent {
+      render(): ReactElement<ReactElementProps> {
+        return { type: 'div', props: { name: 'app' } } as ReactElement
+      }
     }
 
     const rootElement: ReactElement = {
@@ -83,24 +68,31 @@ describe('mount', () => {
     expect(mountedElement).toMatchInlineSnapshot(`
       <div
         name="app"
-      >
-        <p
-          class="child1"
-          id="child1"
-        />
-        <span
-          class="child2"
-          id="child2"
-        />
-        <div
-          name="foo"
-        >
-          <p
-            class="foo-child"
-            id="foo-child"
-          />
-        </div>
-      </div>
+      />
     `)
+  })
+
+  test('should not set children as attribute', () => {
+    function App() {
+      return {
+        type: 'div',
+        props: {
+          name: 'app',
+          children: [
+            { type: 'p', props: { id: 'child1', className: 'child1' } },
+            { type: 'span', props: { id: 'child2', className: 'child2' } },
+          ],
+        },
+      } as ReactElement
+    }
+
+    const rootElement: ReactElement = {
+      type: App,
+      props: {},
+    }
+
+    const mountedElement = mount(rootElement, testingHostConfig)
+
+    expect(Object.keys(mountedElement.attributes).includes('children')).toBeFalsy()
   })
 })
