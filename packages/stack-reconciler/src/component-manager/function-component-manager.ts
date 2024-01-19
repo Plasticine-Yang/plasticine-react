@@ -32,4 +32,8 @@ export class FunctionComponentManager<HostNode> extends BaseComponentManager<Hos
 
     return resolvedElementManager.mount()
   }
+
+  public unmount(): void {
+    // do nothing
+  }
 }

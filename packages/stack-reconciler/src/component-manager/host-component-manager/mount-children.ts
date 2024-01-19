@@ -13,14 +13,14 @@ export function mountChildrenToHostNode<HostNode>(
 
   const resolvedChildren = (Array.isArray(children) ? children : [children]).filter(Boolean) as ReactElement[]
 
-  const resolvedChildElementManagers = resolvedChildren.map((childElement) =>
+  const resolvedChildElementComponentManagers = resolvedChildren.map((childElement) =>
     createComponentManager(childElement, hostConfig),
   )
 
-  const childHostNodes = resolvedChildElementManagers.map((childElementManager) => childElementManager.mount())
+  const childHostNodes = resolvedChildElementComponentManagers.map((childElementManager) => childElementManager.mount())
   for (const childHostNode of childHostNodes) {
     appendChild(hostNode, childHostNode)
   }
 
-  return resolvedChildElementManagers
+  return resolvedChildElementComponentManagers
 }

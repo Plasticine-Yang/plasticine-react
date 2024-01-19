@@ -8,7 +8,7 @@ import { mountChildrenToHostNode } from './mount-children'
 
 export class HostComponentManager<HostNode> extends BaseComponentManager<HostNode> {
   public element: ReactElement
-  public resolvedChildElementManagers: ComponentManager<HostNode>[]
+  public resolvedChildElementComponentManagers: ComponentManager<HostNode>[]
   public hostNode: HostNode | null
 
   constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode>) {
@@ -21,7 +21,7 @@ export class HostComponentManager<HostNode> extends BaseComponentManager<HostNod
     super(options)
 
     this.element = element
-    this.resolvedChildElementManagers = []
+    this.resolvedChildElementComponentManagers = []
     this.hostNode = null
   }
 
@@ -34,8 +34,18 @@ export class HostComponentManager<HostNode> extends BaseComponentManager<HostNod
     this.hostNode = hostNode
 
     setPropsToHostNode(hostNode, props, options)
-    mountChildrenToHostNode(hostNode, children, options)
+
+    const resolvedChildElementComponentManagers = mountChildrenToHostNode(hostNode, children, options)
+    this.resolvedChildElementComponentManagers = resolvedChildElementComponentManagers
 
     return hostNode
+  }
+
+  public unmount(): void {
+    const { resolvedChildElementComponentManagers } = this
+
+    for (const childElementComponentManager of resolvedChildElementComponentManagers) {
+      childElementComponentManager.unmount()
+    }
   }
 }

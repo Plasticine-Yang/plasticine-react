@@ -12,4 +12,6 @@ export abstract class BaseComponentManager<HostNode> {
   abstract element: ReactElement
 
   abstract mount(): HostNode
+
+  abstract unmount(): void
 }

@@ -6,7 +6,7 @@ import type { ComponentManager, ComponentManagerConstructorOptions } from './typ
 export class ClassComponentManager<HostNode> extends BaseComponentManager<HostNode> {
   public element: ReactElement
   public classComponentInstance: ClassComponent | null
-  public resolvedElementManager: ComponentManager<HostNode> | null
+  public resolvedElementComponentManager: ComponentManager<HostNode> | null
 
   constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode>) {
     if (!isClassComponent(element.type)) {
@@ -19,7 +19,7 @@ export class ClassComponentManager<HostNode> extends BaseComponentManager<HostNo
 
     this.element = element
     this.classComponentInstance = null
-    this.resolvedElementManager = null
+    this.resolvedElementComponentManager = null
   }
 
   public mount(): HostNode {
@@ -32,11 +32,18 @@ export class ClassComponentManager<HostNode> extends BaseComponentManager<HostNo
     classComponentInstance.componentWillMount()
 
     const resolvedElement = classComponentInstance.render()
-    const resolvedElementManager = createComponentManager(resolvedElement, hostConfig)
+    const resolvedElementComponentManager = createComponentManager(resolvedElement, hostConfig)
 
     this.classComponentInstance = classComponentInstance
-    this.resolvedElementManager = resolvedElementManager
+    this.resolvedElementComponentManager = resolvedElementComponentManager
 
-    return resolvedElementManager.mount()
+    return resolvedElementComponentManager.mount()
+  }
+
+  public unmount(): void {
+    const { classComponentInstance, resolvedElementComponentManager } = this
+
+    classComponentInstance?.componentWillUnmount()
+    resolvedElementComponentManager?.unmount()
   }
 }
