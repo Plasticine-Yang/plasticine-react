@@ -1,4 +1,4 @@
-import { mount, HostConfig, ReactElement } from '@plasticine-react/stack-reconciler'
+import { mount, HostConfig, ReactElement, ClassComponent } from '@plasticine-react/stack-reconciler'
 
 const hostConfig: HostConfig<HTMLElement> = {
   createHostNode(type) {
@@ -12,14 +12,24 @@ const hostConfig: HostConfig<HTMLElement> = {
   },
 }
 
-function Foo() {
-  return {
-    type: 'div',
-    props: {
-      name: 'foo',
-      children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
-    },
-  } as ReactElement
+class Foo extends ClassComponent {
+  componentWillMount(): void {
+    console.log('componentWillMount')
+  }
+
+  componentWillUnmount(): void {
+    console.log('componentWillUnmount')
+  }
+
+  render(): ReactElement {
+    return {
+      type: 'div',
+      props: {
+        name: 'foo',
+        children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+      },
+    }
+  }
 }
 
 function App() {
@@ -41,10 +51,15 @@ const rootElement: ReactElement = {
   props: {},
 }
 
-const mountedElement = mount(rootElement, hostConfig)
+const { mountedHostNode, componentManager } = mount(rootElement, hostConfig)
 
-console.log(mountedElement)
+console.log(mountedHostNode)
 
 const rootContainer = document.querySelector<HTMLDivElement>('#root')!
 
-rootContainer.appendChild(mountedElement)
+rootContainer.appendChild(mountedHostNode)
+
+setTimeout(() => {
+  componentManager.unmount()
+  rootContainer.innerHTML = ''
+}, 5000)
