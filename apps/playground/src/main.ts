@@ -1,14 +1,24 @@
-import { mount, HostConfig, ReactElement, ClassComponent } from '@plasticine-react/stack-reconciler'
+import { mount, unmount, HostConfig, ReactElement, ClassComponent } from '@plasticine-react/stack-reconciler'
 
 const hostConfig: HostConfig<HTMLElement> = {
   createHostNode(type) {
     return document.createElement(type)
   },
+
   setHostNodeAttribute(hostNode, key, value) {
     hostNode.setAttribute(key as string, value as string)
   },
+
   appendChild(hostNode, childNode) {
     hostNode.appendChild(childNode)
+  },
+
+  getFirstChildFromHostNode(hostNode) {
+    return hostNode.firstChild as HTMLElement
+  },
+
+  unmountHostNode(hostNode) {
+    hostNode.innerHTML = ''
   },
 }
 
@@ -51,15 +61,11 @@ const rootElement: ReactElement = {
   props: {},
 }
 
-const { mountedHostNode, componentManager } = mount(rootElement, hostConfig)
+const rootContainer = document.querySelector<HTMLDivElement>('#root')!
+const { mountedHostNode } = mount(rootElement, rootContainer, hostConfig)
 
 console.log(mountedHostNode)
 
-const rootContainer = document.querySelector<HTMLDivElement>('#root')!
-
-rootContainer.appendChild(mountedHostNode)
-
 setTimeout(() => {
-  componentManager.unmount()
-  rootContainer.innerHTML = ''
+  unmount(rootContainer, hostConfig)
 }, 5000)
