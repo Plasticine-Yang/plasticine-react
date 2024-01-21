@@ -6,6 +6,12 @@ import { mount } from '@/mount'
 import { testingHostConfig } from '../testing-utils'
 
 describe('mount - set props of function component', () => {
+  let hostContainerNode: HTMLElement
+
+  beforeEach(() => {
+    hostContainerNode = testingHostConfig.createHostNode('div')
+  })
+
   test('should set props', () => {
     function App() {
       return { type: 'div', props: { name: 'app' } } as ReactElement
@@ -16,7 +22,7 @@ describe('mount - set props of function component', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
@@ -44,13 +50,19 @@ describe('mount - set props of function component', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(Object.keys(mountedHostNode.attributes).includes('children')).toBeFalsy()
   })
 })
 
 describe('mount - set props of class component', () => {
+  let hostContainerNode: HTMLElement
+
+  beforeEach(() => {
+    hostContainerNode = testingHostConfig.createHostNode('div')
+  })
+
   test('should set props', () => {
     class App extends ClassComponent {
       render(): ReactElement<ReactElementProps> {
@@ -63,7 +75,7 @@ describe('mount - set props of class component', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
@@ -91,7 +103,7 @@ describe('mount - set props of class component', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(Object.keys(mountedHostNode.attributes).includes('children')).toBeFalsy()
   })

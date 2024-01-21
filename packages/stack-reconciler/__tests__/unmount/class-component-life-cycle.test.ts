@@ -4,8 +4,15 @@ import { ClassComponent, ReactElement } from '@/index'
 import { mount } from '@/mount'
 
 import { testingHostConfig } from '../testing-utils'
+import { unmount } from '@/unmount'
 
 describe('class component life cycle', () => {
+  let hostContainerNode: HTMLElement
+
+  beforeEach(() => {
+    hostContainerNode = testingHostConfig.createHostNode('div')
+  })
+
   test('should trigger componentWillUnmount', () => {
     const componentWillUnmountFn = vi.fn()
 
@@ -29,10 +36,10 @@ describe('class component life cycle', () => {
       props: {},
     }
 
-    const { componentManager } = mount(rootElement, testingHostConfig)
+    mount(rootElement, hostContainerNode, testingHostConfig)
     expect(componentWillUnmountFn).not.toHaveBeenCalled()
 
-    componentManager.unmount()
+    unmount(hostContainerNode, testingHostConfig)
     expect(componentWillUnmountFn).toHaveBeenCalledTimes(1)
   })
 
@@ -79,11 +86,11 @@ describe('class component life cycle', () => {
       props: {},
     }
 
-    const { componentManager } = mount(rootElement, testingHostConfig)
+    mount(rootElement, hostContainerNode, testingHostConfig)
     expect(componentWillUnmountAppFn).not.toHaveBeenCalled()
     expect(componentWillUnmountFooFn).not.toHaveBeenCalled()
 
-    componentManager.unmount()
+    unmount(hostContainerNode, testingHostConfig)
     expect(componentWillUnmountAppFn).toHaveBeenCalledTimes(1)
     expect(componentWillUnmountFooFn).toHaveBeenCalledTimes(1)
   })
@@ -124,10 +131,10 @@ describe('class component life cycle', () => {
       props: {},
     }
 
-    const { componentManager } = mount(rootElement, testingHostConfig)
+    mount(rootElement, hostContainerNode, testingHostConfig)
     expect(componentWillUnmountFooFn).not.toHaveBeenCalled()
 
-    componentManager.unmount()
+    unmount(hostContainerNode, testingHostConfig)
     expect(componentWillUnmountFooFn).toHaveBeenCalledTimes(1)
   })
 })

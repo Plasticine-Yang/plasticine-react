@@ -6,6 +6,12 @@ import { mount } from '@/mount'
 import { testingHostConfig } from '../testing-utils'
 
 describe('class component life cycle', () => {
+  let hostContainerNode: HTMLElement
+
+  beforeEach(() => {
+    hostContainerNode = testingHostConfig.createHostNode('div')
+  })
+
   test('should trigger componentWillMount', () => {
     const componentWillMountFn = vi.fn()
 
@@ -31,7 +37,7 @@ describe('class component life cycle', () => {
       props: {},
     }
 
-    mount(rootElement, testingHostConfig)
+    mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(componentWillMountFn).toHaveBeenCalledTimes(1)
   })
@@ -83,7 +89,7 @@ describe('class component life cycle', () => {
       props: {},
     }
 
-    mount(rootElement, testingHostConfig)
+    mount(rootElement, hostContainerNode, testingHostConfig)
     expect(componentWillMountAppFn).toHaveBeenCalledTimes(1)
     expect(componentWillMountFooFn).toHaveBeenCalledTimes(1)
   })
@@ -126,7 +132,7 @@ describe('class component life cycle', () => {
       props: {},
     }
 
-    mount(rootElement, testingHostConfig)
+    mount(rootElement, hostContainerNode, testingHostConfig)
     expect(componentWillMountFooFn).toHaveBeenCalledTimes(1)
   })
 })

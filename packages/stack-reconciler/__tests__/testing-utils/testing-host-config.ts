@@ -10,6 +10,7 @@ export const testingHostConfig: HostConfig<HTMLElement> = {
 
     return hostNode
   },
+
   setHostNodeAttribute(hostNode, key, value) {
     if (typeof key === 'string') {
       hostNode.setAttribute(key, value as string)
@@ -17,7 +18,16 @@ export const testingHostConfig: HostConfig<HTMLElement> = {
       throw new TypeError(`setHostNodeAttribute failed, typeof key is ${typeof key}, not string`)
     }
   },
+
   appendChild(hostNode, childNode) {
     hostNode.appendChild(childNode)
+  },
+
+  getFirstChildFromHostNode(hostNode) {
+    return hostNode.firstChild as HTMLElement
+  },
+
+  unmountHostNode(hostNode) {
+    hostNode.innerHTML = ''
   },
 }

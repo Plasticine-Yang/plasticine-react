@@ -6,6 +6,12 @@ import { mount } from '@/mount'
 import { testingHostConfig } from '../testing-utils'
 
 describe('mount children', () => {
+  let hostContainerNode: HTMLElement
+
+  beforeEach(() => {
+    hostContainerNode = testingHostConfig.createHostNode('div')
+  })
+
   test('should mount children of function component', () => {
     function Foo() {
       return {
@@ -36,7 +42,7 @@ describe('mount children', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
@@ -96,7 +102,7 @@ describe('mount children', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
@@ -154,7 +160,7 @@ describe('mount children', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
@@ -212,7 +218,7 @@ describe('mount children', () => {
       props: {},
     }
 
-    const { mountedHostNode } = mount(rootElement, testingHostConfig)
+    const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
     expect(mountedHostNode).toMatchInlineSnapshot(`
       <div
