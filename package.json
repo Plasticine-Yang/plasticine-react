@@ -7,8 +7,7 @@
     "dev": "turbo dev --filter=./packages/*",
     "build": "turbo build --filter=./packages/*",
     "play": "turbo dev --filer=./apps/playground",
-    "test": "vitest",
-    "test:u": "vitest -u",
+    "test": "turbo test --filter=./packages/*",
     "release": "pnpm build && pnpm changeset publish",
     "commit": "cz",
     "prepare": "husky install"
