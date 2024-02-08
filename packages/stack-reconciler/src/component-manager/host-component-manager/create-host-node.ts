@@ -4,10 +4,10 @@ import { ComponentManagerConstructorOptions } from '../types'
 
 export function createHostNode<HostNode>(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode>) {
   const { hostConfig } = options
-  const { createHostNode } = hostConfig
+  const { createHostNode: createHostNodeWithHostConfig } = hostConfig
   const hostComponentType = element.type as string
 
-  const hostNode = createHostNode(hostComponentType)
+  const hostNode = createHostNodeWithHostConfig(hostComponentType)
 
   return hostNode
 }
