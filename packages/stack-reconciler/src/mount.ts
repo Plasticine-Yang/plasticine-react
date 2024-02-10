@@ -14,7 +14,7 @@ export function mount<HostNode, HostTextNode>(
   const mountedHostNode = componentManager.mount()
 
   if (mountedHostNode !== null) {
-    ;(mountedHostNode as InternalHostNodeAttributes<HostNode>)[componentManagerSymbol] = componentManager
+    ;(mountedHostNode as InternalHostNodeAttributes<HostNode, HostTextNode>)[componentManagerSymbol] = componentManager
 
     appendChild(hostContainerNode, mountedHostNode)
   }

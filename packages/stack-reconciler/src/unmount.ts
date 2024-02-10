@@ -13,7 +13,7 @@ export function unmount<HostNode, HostTextNode>(
     throw new Error('hostContainerNode has no child node mounted.')
   }
 
-  const mountedHostNodeComponentManager = (mountedHostNode as InternalHostNodeAttributes<HostNode>)[
+  const mountedHostNodeComponentManager = (mountedHostNode as InternalHostNodeAttributes<HostNode, HostTextNode>)[
     componentManagerSymbol
   ]
 
