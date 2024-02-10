@@ -1,11 +1,16 @@
 import { mount, unmount, HostConfig, ReactElement, ClassComponent } from '@plasticine-react/stack-reconciler'
 
-const hostConfig: HostConfig<HTMLElement> = {
-  createHostNode(type) {
+const hostConfig: HostConfig<HTMLElement, Text> = {
+  create(type) {
     return document.createElement(type)
   },
 
-  setHostNodeAttribute(hostNode, key, value) {
+  createTextNode(textContent) {
+    const textNode = document.createTextNode(textContent)
+    return textNode
+  },
+
+  setAttribute(hostNode, key, value) {
     hostNode.setAttribute(key as string, value as string)
   },
 
@@ -13,12 +18,16 @@ const hostConfig: HostConfig<HTMLElement> = {
     hostNode.appendChild(childNode)
   },
 
-  getFirstChildFromHostNode(hostNode) {
+  getFirstChild(hostNode) {
     return hostNode.firstChild as HTMLElement
   },
 
-  unmountHostNode(hostNode) {
+  unmount(hostNode) {
     hostNode.innerHTML = ''
+  },
+
+  unmountTextNode(hostTextNode) {
+    hostTextNode.textContent = ''
   },
 }
 
@@ -36,7 +45,7 @@ class Foo extends ClassComponent {
       type: 'div',
       props: {
         name: 'foo',
-        children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+        children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child', children: 'foo-child' } }],
       },
     }
   }
@@ -48,8 +57,8 @@ function App() {
     props: {
       name: 'app',
       children: [
-        { type: 'p', props: { id: 'child1', className: 'child1' } },
-        { type: 'span', props: { id: 'child2', className: 'child2' } },
+        { type: 'p', props: { id: 'child1', className: 'child1', children: 'hello' } },
+        { type: 'span', props: { id: 'child2', className: 'child2', children: 'world' } },
         { type: Foo, props: {} },
       ],
     },
