@@ -1,6 +1,6 @@
 import { classComponentSymbol } from '@/symbols'
 
-import type { ReactElement, ReactElementProps } from '@/types'
+import type { ReactElementProps, ReactNode } from '@/types'
 
 export class ClassComponent<Props extends ReactElementProps = ReactElementProps> {
   public props: Props
@@ -18,7 +18,7 @@ export class ClassComponent<Props extends ReactElementProps = ReactElementProps>
 
   public componentWillUpdate(): void {}
 
-  public render(): ReactElement {
+  public render(): ReactNode {
     throw new Error('unimplemented!')
   }
 }

@@ -1,9 +1,8 @@
-import type { ReactElement } from './react-element'
+import { ReactNode } from './react-node'
 
-export type NormalProps = Record<string, any>
+export type ReactElementProps = Record<string, any> | null
 
-export interface InternalProps {
-  children?: ReactElement | ReactElement[]
+/** 具有特殊用途的保留 props */
+export interface ReservedProps {
+  children?: ReactNode | ReactNode[]
 }
-
-export type ReactElementProps = NormalProps & InternalProps

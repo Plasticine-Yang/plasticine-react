@@ -1,3 +1,4 @@
-import { ReactElement } from './react-element'
+import type { ReactElementProps } from './props'
+import type { ReactNode } from './react-node'
 
-export type FunctionComponent<Props extends Record<string, any> = Record<string, any>> = (props: Props) => ReactElement
+export type FunctionComponent<Props extends ReactElementProps = ReactElementProps> = (props: Props) => ReactNode
