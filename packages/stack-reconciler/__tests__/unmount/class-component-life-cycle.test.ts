@@ -10,7 +10,7 @@ describe('class component life cycle', () => {
   let hostContainerNode: HTMLElement
 
   beforeEach(() => {
-    hostContainerNode = testingHostConfig.createHostNode('div')
+    hostContainerNode = testingHostConfig.create('div')
   })
 
   test('should trigger componentWillUnmount', () => {

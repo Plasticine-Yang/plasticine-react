@@ -1,8 +1,11 @@
 import { componentManagerSymbol } from './constants'
 import type { HostConfig, InternalHostNodeAttributes } from './types'
 
-export function unmount<HostNode>(hostContainerNode: HostNode, hostConfig: HostConfig<HostNode>) {
-  const { getFirstChildFromHostNode, unmountHostNode } = hostConfig
+export function unmount<HostNode, HostTextNode>(
+  hostContainerNode: HostNode,
+  hostConfig: HostConfig<HostNode, HostTextNode>,
+) {
+  const { getFirstChild: getFirstChildFromHostNode, unmount: unmountHostNode } = hostConfig
 
   const mountedHostNode = getFirstChildFromHostNode(hostContainerNode)
 

@@ -9,7 +9,7 @@ describe('mount children', () => {
   let hostContainerNode: HTMLElement
 
   beforeEach(() => {
-    hostContainerNode = testingHostConfig.createHostNode('div')
+    hostContainerNode = testingHostConfig.create('div')
   })
 
   test('should mount children of function component', () => {
@@ -18,7 +18,7 @@ describe('mount children', () => {
         type: 'div',
         props: {
           name: 'foo',
-          children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+          children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child', children: 'foo' } }],
         },
       } as ReactElement
     }
@@ -29,8 +29,8 @@ describe('mount children', () => {
         props: {
           name: 'app',
           children: [
-            { type: 'p', props: { id: 'child1', className: 'child1' } },
-            { type: 'span', props: { id: 'child2', className: 'child2' } },
+            { type: 'p', props: { id: 'child1', className: 'child1', children: 'child1' } },
+            { type: 'span', props: { id: 'child2', className: 'child2', children: 'child2' } },
             { type: Foo, props: {} },
           ],
         },
@@ -51,18 +51,24 @@ describe('mount children', () => {
         <p
           class="child1"
           id="child1"
-        />
+        >
+          child1
+        </p>
         <span
           class="child2"
           id="child2"
-        />
+        >
+          child2
+        </span>
         <div
           name="foo"
         >
           <p
             class="foo-child"
             id="foo-child"
-          />
+          >
+            foo
+          </p>
         </div>
       </div>
     `)
@@ -75,7 +81,7 @@ describe('mount children', () => {
           type: 'div',
           props: {
             name: 'foo',
-            children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+            children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child', children: 'foo-child' } }],
           },
         }
       }
@@ -88,8 +94,8 @@ describe('mount children', () => {
           props: {
             name: 'app',
             children: [
-              { type: 'p', props: { id: 'child1', className: 'child1' } },
-              { type: 'span', props: { id: 'child2', className: 'child2' } },
+              { type: 'p', props: { id: 'child1', className: 'child1', children: 'child1' } },
+              { type: 'span', props: { id: 'child2', className: 'child2', children: 'child2' } },
               { type: Foo, props: {} },
             ],
           },
@@ -111,18 +117,24 @@ describe('mount children', () => {
         <p
           class="child1"
           id="child1"
-        />
+        >
+          child1
+        </p>
         <span
           class="child2"
           id="child2"
-        />
+        >
+          child2
+        </span>
         <div
           name="foo"
         >
           <p
             class="foo-child"
             id="foo-child"
-          />
+          >
+            foo-child
+          </p>
         </div>
       </div>
     `)
@@ -134,7 +146,7 @@ describe('mount children', () => {
         type: 'div',
         props: {
           name: 'foo',
-          children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+          children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child', children: 'foo-child' } }],
         },
       }
     }
@@ -146,8 +158,8 @@ describe('mount children', () => {
           props: {
             name: 'app',
             children: [
-              { type: 'p', props: { id: 'child1', className: 'child1' } },
-              { type: 'span', props: { id: 'child2', className: 'child2' } },
+              { type: 'p', props: { id: 'child1', className: 'child1', children: 'child1' } },
+              { type: 'span', props: { id: 'child2', className: 'child2', children: 'child2' } },
               { type: Foo, props: {} },
             ],
           },
@@ -169,18 +181,24 @@ describe('mount children', () => {
         <p
           class="child1"
           id="child1"
-        />
+        >
+          child1
+        </p>
         <span
           class="child2"
           id="child2"
-        />
+        >
+          child2
+        </span>
         <div
           name="foo"
         >
           <p
             class="foo-child"
             id="foo-child"
-          />
+          >
+            foo-child
+          </p>
         </div>
       </div>
     `)
@@ -193,7 +211,7 @@ describe('mount children', () => {
           type: 'div',
           props: {
             name: 'foo',
-            children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child' } }],
+            children: [{ type: 'p', props: { id: 'foo-child', className: 'foo-child', children: 'foo-child' } }],
           },
         }
       }
@@ -205,8 +223,8 @@ describe('mount children', () => {
         props: {
           name: 'app',
           children: [
-            { type: 'p', props: { id: 'child1', className: 'child1' } },
-            { type: 'span', props: { id: 'child2', className: 'child2' } },
+            { type: 'p', props: { id: 'child1', className: 'child1', children: 'child1' } },
+            { type: 'span', props: { id: 'child2', className: 'child2', children: 'child2' } },
             { type: Foo, props: {} },
           ],
         },
@@ -227,18 +245,24 @@ describe('mount children', () => {
         <p
           class="child1"
           id="child1"
-        />
+        >
+          child1
+        </p>
         <span
           class="child2"
           id="child2"
-        />
+        >
+          child2
+        </span>
         <div
           name="foo"
         >
           <p
             class="foo-child"
             id="foo-child"
-          />
+          >
+            foo-child
+          </p>
         </div>
       </div>
     `)

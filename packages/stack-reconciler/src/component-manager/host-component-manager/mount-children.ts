@@ -1,11 +1,11 @@
-import type { ReactElement, InternalProps } from '@plasticine-react/shared'
+import type { ReactElement, ReservedProps } from '@plasticine-react/shared'
 
 import type { ComponentManagerConstructorOptions } from '../types'
 
-export function mountChildrenToHostNode<HostNode>(
+export function mountChildrenToHostNode<HostNode, HostTextNode>(
   hostNode: HostNode,
-  children: InternalProps['children'],
-  options: ComponentManagerConstructorOptions<HostNode>,
+  children: ReservedProps['children'],
+  options: ComponentManagerConstructorOptions<HostNode, HostTextNode>,
 ) {
   const { hostConfig, createComponentManager } = options
 
@@ -17,9 +17,12 @@ export function mountChildrenToHostNode<HostNode>(
     createComponentManager(childElement, hostConfig),
   )
 
-  const childHostNodes = resolvedChildElementComponentManagers.map((childElementManager) => childElementManager.mount())
+  const childHostNodes = resolvedChildElementComponentManagers
+    .filter((childElementManager) => childElementManager !== null)
+    .map((childElementManager) => childElementManager!.mount())
+
   for (const childHostNode of childHostNodes) {
-    appendChild(hostNode, childHostNode)
+    childHostNode && appendChild(hostNode, childHostNode)
   }
 
   return resolvedChildElementComponentManagers

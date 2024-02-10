@@ -3,11 +3,11 @@ import { FunctionComponent, ReactElement, isFunctionComponent } from '@plasticin
 import { BaseComponentManager } from './base-component-manager'
 import type { ComponentManager, ComponentManagerConstructorOptions } from './types'
 
-export class FunctionComponentManager<HostNode> extends BaseComponentManager<HostNode> {
+export class FunctionComponentManager<HostNode, HostTextNode> extends BaseComponentManager<HostNode, HostTextNode> {
   public element: ReactElement
-  public resolvedElementComponentManager: ComponentManager<HostNode> | null
+  public resolvedElementComponentManager: ComponentManager<HostNode, HostTextNode> | null
 
-  constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode>) {
+  constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode, HostTextNode>) {
     if (!isFunctionComponent(element.type)) {
       throw new Error(
         `instantiate FunctionComponentManager instance failed, ReactElement type: ${element.type} is not a FunctionComponent`,
@@ -20,7 +20,7 @@ export class FunctionComponentManager<HostNode> extends BaseComponentManager<Hos
     this.resolvedElementComponentManager = null
   }
 
-  public mount(): HostNode {
+  public mount(): HostNode | HostTextNode | null {
     const { element, options } = this
     const { hostConfig, createComponentManager } = options
     const functionComponent = element.type as FunctionComponent
@@ -30,7 +30,7 @@ export class FunctionComponentManager<HostNode> extends BaseComponentManager<Hos
 
     this.resolvedElementComponentManager = resolvedElementManager
 
-    return resolvedElementManager.mount()
+    return resolvedElementManager?.mount() ?? null
   }
 
   public unmount(): void {

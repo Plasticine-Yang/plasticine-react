@@ -1,7 +1,9 @@
-export interface HostConfig<HostNode> {
-  createHostNode: (type: string) => HostNode
-  setHostNodeAttribute: (hostNode: HostNode, key: PropertyKey, value: unknown) => void
-  appendChild: (hostNode: HostNode, childNode: HostNode) => void
-  getFirstChildFromHostNode: (hostNode: HostNode) => HostNode
-  unmountHostNode: (hostNode: HostNode) => void
+export interface HostConfig<HostNode, HostTextNode> {
+  create: (type: string) => HostNode
+  createTextNode: (textContent: string) => HostTextNode
+  setAttribute: (hostNode: HostNode, key: PropertyKey, value: unknown) => void
+  appendChild: (hostNode: HostNode, childNode: HostNode | HostTextNode) => void
+  getFirstChild: (hostNode: HostNode) => HostNode
+  unmount: (hostNode: HostNode) => void
+  unmountTextNode: (hostTextNode: HostTextNode) => void
 }

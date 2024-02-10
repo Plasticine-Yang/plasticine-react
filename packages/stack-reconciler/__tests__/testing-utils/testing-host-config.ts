@@ -2,8 +2,8 @@ import { JSDOM } from 'jsdom'
 
 import type { HostConfig } from '@/types'
 
-export const testingHostConfig: HostConfig<HTMLElement> = {
-  createHostNode(type) {
+export const testingHostConfig: HostConfig<HTMLElement, Text> = {
+  create(type) {
     const document = new JSDOM().window.document
 
     const hostNode = document.createElement(type)
@@ -11,7 +11,15 @@ export const testingHostConfig: HostConfig<HTMLElement> = {
     return hostNode
   },
 
-  setHostNodeAttribute(hostNode, key, value) {
+  createTextNode(textContent) {
+    const document = new JSDOM().window.document
+
+    const hostTextNode = document.createTextNode(textContent)
+
+    return hostTextNode
+  },
+
+  setAttribute(hostNode, key, value) {
     if (typeof key === 'string') {
       hostNode.setAttribute(key, value as string)
     } else {
@@ -23,11 +31,15 @@ export const testingHostConfig: HostConfig<HTMLElement> = {
     hostNode.appendChild(childNode)
   },
 
-  getFirstChildFromHostNode(hostNode) {
+  getFirstChild(hostNode) {
     return hostNode.firstChild as HTMLElement
   },
 
-  unmountHostNode(hostNode) {
+  unmount(hostNode) {
     hostNode.innerHTML = ''
+  },
+
+  unmountTextNode(hostTextNode) {
+    hostTextNode.textContent = ''
   },
 }

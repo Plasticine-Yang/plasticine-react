@@ -3,12 +3,12 @@ import { ClassComponent, ReactElement, isClassComponent } from '@plasticine-reac
 import { BaseComponentManager } from './base-component-manager'
 import type { ComponentManager, ComponentManagerConstructorOptions } from './types'
 
-export class ClassComponentManager<HostNode> extends BaseComponentManager<HostNode> {
+export class ClassComponentManager<HostNode, HostTextNode> extends BaseComponentManager<HostNode, HostTextNode> {
   public element: ReactElement
   public classComponentInstance: ClassComponent | null
-  public resolvedElementComponentManager: ComponentManager<HostNode> | null
+  public resolvedElementComponentManager: ComponentManager<HostNode, HostTextNode> | null
 
-  constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode>) {
+  constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode, HostTextNode>) {
     if (!isClassComponent(element.type)) {
       throw new Error(
         `instantiate ClassComponentManager instance failed, ReactElement type: ${element.type} is not a ClassComponent`,
@@ -22,7 +22,7 @@ export class ClassComponentManager<HostNode> extends BaseComponentManager<HostNo
     this.resolvedElementComponentManager = null
   }
 
-  public mount(): HostNode {
+  public mount(): HostNode | HostTextNode | null {
     const { element, options } = this
     const { hostConfig, createComponentManager } = options
     const classComponent = element.type as typeof ClassComponent
@@ -31,13 +31,13 @@ export class ClassComponentManager<HostNode> extends BaseComponentManager<HostNo
 
     classComponentInstance.componentWillMount()
 
-    const resolvedElement = classComponentInstance.render()
-    const resolvedElementComponentManager = createComponentManager(resolvedElement, hostConfig)
+    const resolvedReactNode = classComponentInstance.render()
+    const resolvedReactNodeComponentManager = createComponentManager(resolvedReactNode, hostConfig)
 
     this.classComponentInstance = classComponentInstance
-    this.resolvedElementComponentManager = resolvedElementComponentManager
+    this.resolvedElementComponentManager = resolvedReactNodeComponentManager
 
-    return resolvedElementComponentManager.mount()
+    return resolvedReactNodeComponentManager?.mount() ?? null
   }
 
   public unmount(): void {

@@ -4,18 +4,20 @@ import { createComponentManager } from './component-manager'
 import { componentManagerSymbol } from './constants'
 import type { HostConfig, InternalHostNodeAttributes, MountResult } from './types'
 
-export function mount<HostNode>(
+export function mount<HostNode, HostTextNode>(
   element: ReactElement,
   hostContainerNode: HostNode,
-  hostConfig: HostConfig<HostNode>,
-): MountResult<HostNode> {
+  hostConfig: HostConfig<HostNode, HostTextNode>,
+): MountResult<HostNode, HostTextNode> {
   const { appendChild } = hostConfig
-  const componentManager = createComponentManager(element, hostConfig)
+  const componentManager = createComponentManager(element, hostConfig)!
   const mountedHostNode = componentManager.mount()
 
-  ;(mountedHostNode as InternalHostNodeAttributes<HostNode>)[componentManagerSymbol] = componentManager
+  if (mountedHostNode !== null) {
+    ;(mountedHostNode as InternalHostNodeAttributes<HostNode>)[componentManagerSymbol] = componentManager
 
-  appendChild(hostContainerNode, mountedHostNode)
+    appendChild(hostContainerNode, mountedHostNode)
+  }
 
   return {
     componentManager,

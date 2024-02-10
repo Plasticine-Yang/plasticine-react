@@ -11,7 +11,7 @@ export function setPropsToHostNode<HostNode>(
 ) {
   const { hostConfig } = options
 
-  const { setHostNodeAttribute } = hostConfig
+  const { setAttribute: setHostNodeAttribute } = hostConfig
 
   for (const propName of Object.keys(props)) {
     if (!SPECIAL_PROPERTIES.includes(propName)) {

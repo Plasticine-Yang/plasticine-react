@@ -1,17 +1,17 @@
-import { ReactElement, isHostComponent } from '@plasticine-react/shared'
+import { ReactElement, ReservedProps, isHostComponent } from '@plasticine-react/shared'
 
 import { BaseComponentManager } from '../base-component-manager'
 import type { ComponentManager, ComponentManagerConstructorOptions } from '../types'
 import { createHostNode } from './create-host-node'
-import { setPropsToHostNode } from './set-props-to-host-node'
 import { mountChildrenToHostNode } from './mount-children'
+import { setPropsToHostNode } from './set-props-to-host-node'
 
-export class HostComponentManager<HostNode> extends BaseComponentManager<HostNode> {
+export class HostComponentManager<HostNode, HostTextNode> extends BaseComponentManager<HostNode, HostTextNode> {
   public element: ReactElement
-  public resolvedChildElementComponentManagers: ComponentManager<HostNode>[]
+  public resolvedChildElementComponentManagers: (ComponentManager<HostNode, HostTextNode> | null)[]
   public hostNode: HostNode | null
 
-  constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode>) {
+  constructor(element: ReactElement, options: ComponentManagerConstructorOptions<HostNode, HostTextNode>) {
     if (!isHostComponent(element.type)) {
       throw new Error(
         `instantiate HostComponentManager instance failed, ReactElement type: ${element.type} is not a HostComponent`,
@@ -28,7 +28,7 @@ export class HostComponentManager<HostNode> extends BaseComponentManager<HostNod
   public mount(): HostNode {
     const { element, options } = this
     const { props } = element
-    const { children } = props
+    const { children } = props as ReservedProps
 
     const hostNode = createHostNode(element, options)
     this.hostNode = hostNode
@@ -45,7 +45,7 @@ export class HostComponentManager<HostNode> extends BaseComponentManager<HostNod
     const { resolvedChildElementComponentManagers } = this
 
     for (const childElementComponentManager of resolvedChildElementComponentManagers) {
-      childElementComponentManager.unmount()
+      childElementComponentManager?.unmount()
     }
   }
 }

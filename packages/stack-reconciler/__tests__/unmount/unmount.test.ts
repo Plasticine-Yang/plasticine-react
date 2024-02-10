@@ -8,7 +8,7 @@ describe('unmount', () => {
   let hostContainerNode: HTMLElement
 
   beforeEach(() => {
-    hostContainerNode = testingHostConfig.createHostNode('div')
+    hostContainerNode = testingHostConfig.create('div')
   })
 
   test('should unmount', () => {

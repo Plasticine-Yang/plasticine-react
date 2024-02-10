@@ -9,7 +9,7 @@ describe('mount - set props of function component', () => {
   let hostContainerNode: HTMLElement
 
   beforeEach(() => {
-    hostContainerNode = testingHostConfig.createHostNode('div')
+    hostContainerNode = testingHostConfig.create('div')
   })
 
   test('should set props', () => {
@@ -52,7 +52,7 @@ describe('mount - set props of function component', () => {
 
     const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
-    expect(Object.keys(mountedHostNode.attributes).includes('children')).toBeFalsy()
+    expect(Object.keys(mountedHostNode!.attributes).includes('children')).toBeFalsy()
   })
 })
 
@@ -60,7 +60,7 @@ describe('mount - set props of class component', () => {
   let hostContainerNode: HTMLElement
 
   beforeEach(() => {
-    hostContainerNode = testingHostConfig.createHostNode('div')
+    hostContainerNode = testingHostConfig.create('div')
   })
 
   test('should set props', () => {
@@ -105,6 +105,6 @@ describe('mount - set props of class component', () => {
 
     const { mountedHostNode } = mount(rootElement, hostContainerNode, testingHostConfig)
 
-    expect(Object.keys(mountedHostNode.attributes).includes('children')).toBeFalsy()
+    expect(Object.keys(mountedHostNode!.attributes).includes('children')).toBeFalsy()
   })
 })
